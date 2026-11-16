@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <mask id="ridges">
+      <rect width="64" height="64" fill="#fff"/>
+      <path d="M32 29.4L32 6M32 29.4L52.5 22.8M32 29.4L46.6 50.8M32 29.4L32 58M32 29.4L17.4 50.8M32 29.4L11.5 22.8" stroke="#000" stroke-width="4.5"/>
+    </mask>
+  </defs>
+  <polygon points="32,6 52.5,22.8 46.6,50.8 32,58 17.4,50.8 11.5,22.8" fill="#000" mask="url(#ridges)"/>
+</svg>

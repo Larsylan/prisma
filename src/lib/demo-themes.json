@@ -1,0 +1,353 @@
+[
+  {
+    "name": "Nuit",
+    "palette": {
+      "accent": "#2d6bf6",
+      "appearance": "dark",
+      "background": [
+        "#0b1d46",
+        "#050b1e",
+        "#02040c"
+      ],
+      "glows": false,
+      "highlight": "#6fb1ff",
+      "progress": [
+        "#6fb1ff",
+        "#2d6bf6"
+      ]
+    },
+    "preset": "night"
+  },
+  {
+    "name": "Indigo",
+    "palette": {
+      "accent": "#6366f1",
+      "appearance": "dark",
+      "background": [
+        "#1b1550",
+        "#0b0924",
+        "#04030d"
+      ],
+      "glows": false,
+      "highlight": "#a5b4fc",
+      "progress": [
+        "#a5b4fc",
+        "#6366f1"
+      ]
+    },
+    "preset": "indigo"
+  },
+  {
+    "name": "Améthyste",
+    "palette": {
+      "accent": "#9b5cf6",
+      "appearance": "dark",
+      "background": [
+        "#2a1446",
+        "#120a22",
+        "#06030c"
+      ],
+      "glows": false,
+      "highlight": "#cda8ff",
+      "progress": [
+        "#cda8ff",
+        "#9b5cf6"
+      ]
+    },
+    "preset": "amethyst"
+  },
+  {
+    "name": "Sakura",
+    "palette": {
+      "accent": "#ec5fa6",
+      "appearance": "dark",
+      "background": [
+        "#3d1230",
+        "#1b0715",
+        "#0a0308"
+      ],
+      "glows": false,
+      "highlight": "#f9aed3",
+      "progress": [
+        "#f9aed3",
+        "#ec5fa6"
+      ]
+    },
+    "preset": "sakura"
+  },
+  {
+    "name": "Rubis",
+    "palette": {
+      "accent": "#e5394f",
+      "appearance": "dark",
+      "background": [
+        "#430d16",
+        "#1e0509",
+        "#0b0204"
+      ],
+      "glows": false,
+      "highlight": "#ff9aa7",
+      "progress": [
+        "#ff9aa7",
+        "#e5394f"
+      ]
+    },
+    "preset": "ruby"
+  },
+  {
+    "name": "Braise",
+    "palette": {
+      "accent": "#f06a2c",
+      "appearance": "dark",
+      "background": [
+        "#46180b",
+        "#200b05",
+        "#0c0402"
+      ],
+      "glows": false,
+      "highlight": "#ffb089",
+      "progress": [
+        "#ffb089",
+        "#f06a2c"
+      ]
+    },
+    "preset": "ember"
+  },
+  {
+    "name": "Ambre",
+    "palette": {
+      "accent": "#e0a91c",
+      "appearance": "dark",
+      "background": [
+        "#3a2a08",
+        "#1a1203",
+        "#0a0701"
+      ],
+      "glows": false,
+      "highlight": "#f5d47a",
+      "progress": [
+        "#f5d47a",
+        "#e0a91c"
+      ]
+    },
+    "preset": "amber"
+  },
+  {
+    "name": "Émeraude",
+    "palette": {
+      "accent": "#22b07a",
+      "appearance": "dark",
+      "background": [
+        "#0e3a2e",
+        "#061a15",
+        "#020806"
+      ],
+      "glows": false,
+      "highlight": "#7de3b8",
+      "progress": [
+        "#7de3b8",
+        "#22b07a"
+      ]
+    },
+    "preset": "emerald"
+  },
+  {
+    "name": "Océan",
+    "palette": {
+      "accent": "#14b8c4",
+      "appearance": "dark",
+      "background": [
+        "#0a3440",
+        "#04171d",
+        "#01080a"
+      ],
+      "glows": false,
+      "highlight": "#7fe3ea",
+      "progress": [
+        "#7fe3ea",
+        "#14b8c4"
+      ]
+    },
+    "preset": "ocean"
+  },
+  {
+    "name": "Aurore",
+    "palette": {
+      "accent": "#ec5fa6",
+      "appearance": "dark",
+      "background": [
+        "#0b2f3a",
+        "#071624",
+        "#02070c"
+      ],
+      "glows": false,
+      "highlight": "#8ff0c8",
+      "progress": [
+        "#8ff0c8",
+        "#ec5fa6"
+      ]
+    },
+    "preset": "aurora"
+  },
+  {
+    "name": "Crépuscule",
+    "palette": {
+      "accent": "#ff8a4c",
+      "appearance": "dark",
+      "background": [
+        "#3a1446",
+        "#1a0a22",
+        "#0a0408"
+      ],
+      "glows": false,
+      "highlight": "#ffc29b",
+      "progress": [
+        "#ffc29b",
+        "#ff8a4c"
+      ]
+    },
+    "preset": "twilight"
+  },
+  {
+    "name": "Graphite",
+    "palette": {
+      "accent": "#9aa7bd",
+      "appearance": "dark",
+      "background": [
+        "#23262d",
+        "#111317",
+        "#060708"
+      ],
+      "glows": false,
+      "highlight": "#d1d8e4",
+      "progress": [
+        "#d1d8e4",
+        "#9aa7bd"
+      ]
+    },
+    "preset": "graphite"
+  },
+  {
+    "name": "Néon cyan",
+    "palette": {
+      "accent": "#00e5ff",
+      "appearance": "dark",
+      "background": [
+        "#041a24",
+        "#020b12",
+        "#000306"
+      ],
+      "glows": true,
+      "highlight": "#7df9ff",
+      "progress": [
+        "#7df9ff",
+        "#00e5ff"
+      ]
+    },
+    "preset": "neonCyan"
+  },
+  {
+    "name": "Néon magenta",
+    "palette": {
+      "accent": "#ff2bd6",
+      "appearance": "dark",
+      "background": [
+        "#24041f",
+        "#11020f",
+        "#050005"
+      ],
+      "glows": true,
+      "highlight": "#ff8ef0",
+      "progress": [
+        "#ff8ef0",
+        "#ff2bd6"
+      ]
+    },
+    "preset": "neonMagenta"
+  },
+  {
+    "name": "Néon acide",
+    "palette": {
+      "accent": "#9dff00",
+      "appearance": "dark",
+      "background": [
+        "#0d1f04",
+        "#050d02",
+        "#010300"
+      ],
+      "glows": true,
+      "highlight": "#d4ff7a",
+      "progress": [
+        "#f0ff4f",
+        "#9dff00"
+      ]
+    },
+    "preset": "neonAcid"
+  },
+  {
+    "name": "Synthwave",
+    "palette": {
+      "accent": "#ff2e88",
+      "appearance": "dark",
+      "background": [
+        "#2b0b4a",
+        "#12052a",
+        "#05010f"
+      ],
+      "glows": true,
+      "highlight": "#ffb86b",
+      "progress": [
+        "#ffd319",
+        "#ff901f",
+        "#ff2975",
+        "#f222ff",
+        "#8c1eff"
+      ]
+    },
+    "preset": "synthwave"
+  },
+  {
+    "name": "Blanc néon",
+    "palette": {
+      "accent": "#d6119a",
+      "appearance": "light",
+      "background": [
+        "#ffffff",
+        "#f4f2fb",
+        "#e9e6f5"
+      ],
+      "glows": true,
+      "highlight": "#a4006f",
+      "progress": [
+        "#00c8f0",
+        "#8f3dff",
+        "#ff1fb4"
+      ]
+    },
+    "preset": "whiteNeon"
+  },
+  {
+    "name": "Noir spectral",
+    "palette": {
+      "accent": "#8f7bff",
+      "appearance": "dark",
+      "background": [
+        "#0a0a0c",
+        "#050506",
+        "#000000"
+      ],
+      "glows": true,
+      "highlight": "#d9d4ff",
+      "progress": [
+        "#ff3b3b",
+        "#ffb13b",
+        "#f5ff3b",
+        "#3bff6f",
+        "#3bd8ff",
+        "#6b3bff",
+        "#ff3bd5"
+      ]
+    },
+    "preset": "spectralBlack"
+  }
+]

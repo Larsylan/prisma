@@ -1,0 +1,40 @@
+[package]
+name = "prisma"
+description = "Système de trophées unifié PlayStation, Steam et Switch"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+prisma-core.workspace = true
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+log.workspace = true
+tauri = { version = "~2.11", features = ["tray-icon", "image-png", "macos-private-api"] }
+tauri-plugin-autostart = "2"
+tauri-plugin-log = "2"
+tauri-plugin-opener = "~2.5"
+tauri-plugin-single-instance = "2"
+notify = "8"
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
+rodio = { version = "0.20", default-features = false, features = ["wav"] }
+dirs = "6"
+
+[dev-dependencies]
+prisma-core = { workspace = true, features = ["test-support"] }
+tempfile = "3"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"
+objc2-app-kit = { version = "0.3", features = ["NSWindow", "NSResponder"] }
+objc2-core-graphics = { version = "0.3", features = ["CGWindowLevel"] }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }

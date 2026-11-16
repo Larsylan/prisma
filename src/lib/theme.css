@@ -1,0 +1,141 @@
+:root {
+  /* Valeurs du thème Nuit, remplacées par le thème actif (voir palette.ts). */
+  --background-top: #0b1d46;
+  --background-bottom: #02040c;
+  --background: linear-gradient(180deg, #0b1d46 0%, #050b1e 50%, #02040c 100%);
+  --earned: #6fb1ff;
+  --accent: #2d6bf6;
+  --on-accent: #ffffff;
+  --progress: linear-gradient(90deg, #6fb1ff, #2d6bf6);
+  --glow: none;
+  --text-glow: none;
+  /* Encre du texte et des surfaces : blanche sur un thème sombre, sombre sur un thème clair. */
+  --ink: 255 255 255;
+  --on-ink: #000000;
+  --on-highlight: #050b1e;
+  --sunken: rgba(0, 0, 0, 0.25);
+  --dialog: #141a2a;
+  --toast-tint: #1c2333;
+  color-scheme: dark;
+
+  --card: rgb(var(--ink) / 0.055);
+  --card-hover: rgb(var(--ink) / 0.1);
+  --stroke: rgb(var(--ink) / 0.08);
+  --field: rgb(var(--ink) / 0.07);
+  --placeholder: rgb(var(--ink) / 0.06);
+  --text: rgb(var(--ink));
+  --secondary: rgb(var(--ink) / 0.6);
+  --danger: #ff6b6b;
+  --gutter: 28px;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--background);
+}
+
+/* Page de la notification : seule la carte doit apparaître par-dessus le jeu. */
+html.transparent,
+html.transparent body {
+  color-scheme: normal;
+  background: transparent;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.text-input {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--stroke);
+  background: var(--sunken);
+  outline: none;
+}
+
+.text-input:focus {
+  border-color: var(--accent);
+}
+
+.select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--stroke);
+  background: rgb(var(--ink) / 0.08);
+  outline: none;
+}
+
+.button {
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgb(var(--ink) / 0.1);
+  font-weight: 500;
+}
+
+.button:hover:not(:disabled) {
+  background: rgb(var(--ink) / 0.16);
+}
+
+.button.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: var(--glow);
+}
+
+.button.danger {
+  color: var(--danger);
+}
+
+.secondary {
+  color: var(--secondary);
+}
+
+a {
+  color: var(--earned);
+  text-shadow: var(--text-glow);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--ink) / 0.15);
+  border-radius: 5px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}

@@ -1,0 +1,32 @@
+[package]
+name = "prisma-core"
+description = "Logique métier de Prisma : trophées, fusion, sources PlayStation, Steam et Switch"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+# Outils de test (faux dossier Steam) utilisés par les tests de l'app.
+test-support = []
+
+[dependencies]
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+log.workspace = true
+tokio = { workspace = true, features = ["sync"] }
+regex = "1"
+unicode-normalization = "0.1"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+url = "2"
+dirs = "6"
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.55"
+
+[dev-dependencies]
+tokio.workspace = true
+tempfile = "3"

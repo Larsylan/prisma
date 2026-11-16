@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12337f"/>
+      <stop offset="1" stop-color="#03081f"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="30" flood-color="#8cb3ff" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#background)"/>
+  <g filter="url(#glow)">
+    <polygon points="512,458.8 512,232 710,394" fill="#d4ecff"/>
+    <polygon points="512,458.8 710,394 652.8,664" fill="#9fb2de"/>
+    <polygon points="512,458.8 652.8,664 512,772" fill="#8578c0"/>
+    <polygon points="512,458.8 512,772 371.2,664" fill="#8396c9"/>
+    <polygon points="512,458.8 371.2,664 314,394" fill="#d8c6f5"/>
+    <polygon points="512,458.8 314,394 512,232" fill="#ffffff"/>
+  </g>
+  <path d="M512 458.8L512 232M512 458.8L710 394M512 458.8L652.8 664M512 458.8L512 772M512 458.8L371.2 664M512 458.8L314 394"
+        stroke="#ffffff" stroke-opacity="0.5" stroke-width="9"/>
+  <polygon points="512,232 710,394 652.8,664 512,772 371.2,664 314,394" fill="none" stroke="#45547f" stroke-width="16" stroke-linejoin="round"/>
+  <path d="M424 273.6Q424 361.6 512 361.6Q424 361.6 424 449.6Q424 361.6 336 361.6Q424 361.6 424 273.6Z" fill="#ffffff"/>
+</svg>
