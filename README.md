@@ -359,7 +359,7 @@ Le code est découpé en deux parties :
 - **`crates/prisma-core`** (Rust) contient tout le métier, sans aucune interface : modèles, règles de fusion et de regroupement, lecture des sources, persistance, synthèse du son.
 - **L'app Tauri** réunit un backend Rust (`src-tauri`), qui gère la synchronisation, les notifications et l'icône, et une interface Svelte + TypeScript (`src`). `Services` crée chaque service une seule fois et les relie entre eux, sans singleton. Les services ne parlent à Tauri qu'à travers deux interfaces étroites (`Ui`, `Announcer`), remplacées par des doublures dans les tests.
 
-Le cœur, les services de l'app et les composants de l'interface ont chacun leurs tests ; la CI les lance sur macOS, Windows et Linux.
+Le cœur, les services de l'app et les composants de l'interface ont chacun leurs tests ; la CI les lance sur macOS, Windows et Linux. Elle produit aussi les installateurs de chaque système, les installe et lance l'app sur un faux client Steam pour vérifier qu'elle détecte et annonce un succès (`scripts/smoke-test.py`, captures d'écran jointes à chaque exécution).
 
 ```
 prisma/
@@ -445,10 +445,11 @@ Deux variables d'environnement isolent les essais de vos vraies données :
 | `PRISMA_DATA_DIR` | Bibliothèque séparée. Dans ce mode, l'app n'utilise pas le compte PSN enregistré dans le coffre du système |
 
 Pour simuler un déblocage :
-1. copiez un schéma et un fichier de stats dans un faux dossier Steam ;
-2. lancez l'app avec les deux variables ;
-3. modifiez le fichier de stats en mettant un bit à 1 dans `data` et en ajoutant une date dans `AchievementTimes` ;
-4. la notification part immédiatement.
+```sh
+cargo run -p prisma-core --features test-support --example steam_fixture -- /tmp/steam         # faux client avec trois jeux
+PRISMA_STEAM_ROOT=/tmp/steam PRISMA_DATA_DIR=/tmp/prisma npm run tauri dev
+cargo run -p prisma-core --features test-support --example steam_fixture -- /tmp/steam unlock  # la notification part aussitôt
+```
 
 ## Désinstallation
 

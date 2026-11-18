@@ -163,6 +163,15 @@ cargo clippy --workspace --all-targets  # Rust lints
 cargo run -p prisma-core --example dump # list locally read Steam achievements
 ```
 
+To simulate an unlock, write a fake Steam client, run the app on it, then unlock an achievement:
+```sh
+cargo run -p prisma-core --features test-support --example steam_fixture -- /tmp/steam
+PRISMA_STEAM_ROOT=/tmp/steam PRISMA_DATA_DIR=/tmp/prisma npm run tauri dev
+cargo run -p prisma-core --features test-support --example steam_fixture -- /tmp/steam unlock
+```
+
+Besides the tests, CI builds the installers for each system, installs them and runs the app on that fake Steam client (`scripts/smoke-test.py`); the screenshots are attached to every run.
+
 | Environment variable | Effect |
 |---|---|
 | `PRISMA_STEAM_ROOT` | Simulated Steam folder, with `appcache/stats` and `config/loginusers.vdf` |

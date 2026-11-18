@@ -30,3 +30,7 @@ winreg = "0.55"
 [dev-dependencies]
 tokio.workspace = true
 tempfile = "3"
+
+[[example]]
+name = "steam_fixture"
+required-features = ["test-support"]
