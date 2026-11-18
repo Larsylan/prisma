@@ -104,7 +104,7 @@ Les installateurs sont créés dans `target/release/bundle/` :
 |---|---|
 | macOS | `macos/Prisma.app` et `dmg/Prisma_….dmg` |
 | Windows | `msi/Prisma_….msi` et `nsis/Prisma_…-setup.exe` |
-| Linux | `deb/prisma_….deb`, `rpm/prisma-….rpm` et `appimage/prisma_….AppImage` |
+| Linux | `deb/Prisma_….deb`, `rpm/Prisma-….rpm` et `appimage/Prisma_….AppImage` |
 
 Sur macOS, `./scripts/install-macos.sh` compile l'app, l'installe dans `/Applications` et retire toute autre copie.
 
