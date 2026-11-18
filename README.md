@@ -26,6 +26,12 @@ Everything runs on your computer. No server, no account to create, no leaderboar
 
 Get the installer for your system from the **[latest release](https://github.com/Larsylan/prisma/releases/latest)**: `.dmg` for macOS (Apple Silicon and Intel), `-setup.exe` or `.msi` for Windows, `.deb`, `.rpm` or `.AppImage` for Linux. No need to build anything.
 
+On **Arch Linux** and derivatives, the package recipe is in the repository:
+
+```sh
+git clone https://github.com/Larsylan/prisma.git && cd prisma/packaging/aur && makepkg -si
+```
+
 > The installers are not signed by an identified developer. On first launch, allow Prisma in macOS System Settings → Privacy & Security → **Open Anyway**, or click **More info** → **Run anyway** in Windows SmartScreen.
 
 > **Unofficial project.** Prisma is not affiliated with Sony Interactive Entertainment, Valve or Nintendo. PlayStation, Steam and Nintendo Switch are trademarks of their respective owners. See [Disclaimer](#disclaimer).

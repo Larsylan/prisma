@@ -26,6 +26,12 @@ Tout est calculé sur votre ordinateur. Il n'y a ni serveur, ni compte à créer
 
 Téléchargez l'installateur de votre système dans la **[dernière version](https://github.com/Larsylan/prisma/releases/latest)** : `.dmg` pour macOS (Apple Silicon et Intel), `-setup.exe` ou `.msi` pour Windows, `.deb`, `.rpm` ou `.AppImage` pour Linux. Rien à compiler.
 
+Sous **Arch Linux** et ses dérivés, la recette du paquet est dans le dépôt :
+
+```sh
+git clone https://github.com/Larsylan/prisma.git && cd prisma/packaging/aur && makepkg -si
+```
+
 > Les installateurs ne sont pas signés par un développeur identifié. Au premier lancement, macOS demande d'autoriser Prisma dans Réglages Système → Confidentialité et sécurité → **Ouvrir quand même**. Windows SmartScreen affiche **Informations complémentaires** → **Exécuter quand même**.
 
 > **Projet non officiel.** Prisma n'est affilié ni à Sony Interactive Entertainment, ni à Valve, ni à Nintendo. PlayStation, Steam et Nintendo Switch sont des marques de leurs propriétaires respectifs. Voir [Avertissement](#avertissement).
