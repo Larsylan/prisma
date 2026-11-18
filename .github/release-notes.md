@@ -6,9 +6,9 @@ Unified trophy tracker for **PlayStation**, **Steam** and **Nintendo Switch**, w
 |---|---|
 | **macOS** 11+ (Apple Silicon and Intel) | `Prisma_…_universal.dmg` |
 | **Windows** 10 / 11 | `Prisma_…_x64-setup.exe` (or the `.msi`) |
-| **Linux** Debian / Ubuntu | `prisma_…_amd64.deb` |
-| **Linux** Fedora / openSUSE | `prisma-….x86_64.rpm` |
-| **Linux** any distribution | `prisma_…_amd64.AppImage` |
+| **Linux** Debian / Ubuntu | `Prisma_…_amd64.deb` |
+| **Linux** Fedora / openSUSE | `Prisma-….x86_64.rpm` |
+| **Linux** any distribution | `Prisma_…_amd64.AppImage` |
 
 The app is not signed by an identified developer:
 - **macOS**: open the `.dmg`, drag Prisma to Applications, then on first launch allow it in System Settings → Privacy & Security → **Open Anyway**.
@@ -27,9 +27,9 @@ Système de trophées unifié PlayStation, Steam et Switch, avec une notificatio
 |---|---|
 | **macOS** 11+ (Apple Silicon et Intel) | `Prisma_…_universal.dmg` |
 | **Windows** 10 / 11 | `Prisma_…_x64-setup.exe` (ou le `.msi`) |
-| **Linux** Debian / Ubuntu | `prisma_…_amd64.deb` |
-| **Linux** Fedora / openSUSE | `prisma-….x86_64.rpm` |
-| **Linux** toutes distributions | `prisma_…_amd64.AppImage` |
+| **Linux** Debian / Ubuntu | `Prisma_…_amd64.deb` |
+| **Linux** Fedora / openSUSE | `Prisma-….x86_64.rpm` |
+| **Linux** toutes distributions | `Prisma_…_amd64.AppImage` |
 
 L'app n'est pas signée par un développeur identifié :
 - **macOS** : ouvrez le `.dmg`, glissez Prisma dans Applications, puis autorisez-la au premier lancement dans Réglages Système → Confidentialité et sécurité → **Ouvrir quand même**.
