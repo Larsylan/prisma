@@ -15,7 +15,8 @@ import tempfile
 import time
 from pathlib import Path
 
-STARTUP_DELAY = 15
+# Le premier lancement d'un exécutable fraîchement installé peut être long, le temps que l'antivirus l'examine.
+STARTUP_TIMEOUT = 120
 UNLOCKED_TROPHY = "Fond de l'océan"
 FIXTURE_GAMES = 3
 
@@ -34,12 +35,10 @@ def main() -> int:
     process = subprocess.Popen([app], env=environment, stdout=log, stderr=subprocess.STDOUT)
     failures = []
     try:
-        time.sleep(STARTUP_DELAY)
-        if process.poll() is None:
+        if wait_for_library(process, data / "library.json"):
             exercise(fixture, steam, output)
-            games = stored_games(data / "library.json")
-            if games != FIXTURE_GAMES:
-                failures.append(f"{games} jeu(x) enregistré(s) au lieu de {FIXTURE_GAMES}")
+        elif process.poll() is None:
+            failures.append(f"{stored_games(data / 'library.json')} jeu(x) enregistré(s) au lieu de {FIXTURE_GAMES}")
         if process.poll() is not None:
             failures.append(f"l'app s'est arrêtée (code {process.returncode})")
     finally:
@@ -52,6 +51,17 @@ def main() -> int:
         failures.append(f"le succès « {UNLOCKED_TROPHY} » n'a pas été annoncé")
     failures += [f"erreur dans le journal : {line}" for line in text.splitlines() if "[ERROR]" in line]
     return report(failures, output)
+
+
+def wait_for_library(process: subprocess.Popen, library: Path) -> bool:
+    """L'app est prête quand elle a enregistré les jeux du faux client ; l'interface a encore besoin d'un instant."""
+    deadline = time.monotonic() + STARTUP_TIMEOUT
+    while time.monotonic() < deadline and process.poll() is None:
+        if stored_games(library) == FIXTURE_GAMES:
+            time.sleep(5)
+            return True
+        time.sleep(1)
+    return False
 
 
 def exercise(fixture: Path, steam: Path, output: Path) -> None:
