@@ -86,7 +86,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $msi = (Get-ChildItem ${{ matrix.bundle-dir }}/msi/*.msi).FullName
+          $msi = (Get-ChildItem ${{ matrix.bundle-dir }}/msi/*_en-US.msi).FullName
           Start-Process msiexec -ArgumentList "/i `"$msi`" /qn" -Wait
           $app = Get-ChildItem "$env:ProgramFiles\Prisma" -Filter *.exe | Where-Object Name -NotLike 'uninstall*' | Select-Object -First 1
           python scripts/smoke-test.py $app.FullName target/release/examples/steam_fixture.exe captures

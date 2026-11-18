@@ -1,4 +1,4 @@
-Unified trophy tracker for **PlayStation**, **Steam** and **Nintendo Switch**, with real-time achievement notifications on top of your games. The interface is in French.
+Unified trophy tracker for **PlayStation**, **Steam** and **Nintendo Switch**, with real-time achievement notifications on top of your games. Available in English and French.
 
 ## Download
 
@@ -21,7 +21,7 @@ Every installer was installed and launched automatically on its system before th
 
 ## Téléchargement
 
-Système de trophées unifié PlayStation, Steam et Switch, avec une notification instantanée par-dessus le jeu.
+Système de trophées unifié PlayStation, Steam et Switch, avec une notification instantanée par-dessus le jeu. Disponible en français et en anglais.
 
 | Système | Fichier |
 |---|---|

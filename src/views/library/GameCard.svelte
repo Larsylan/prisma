@@ -5,6 +5,7 @@
   import ProgressBar from '../../components/ProgressBar.svelte';
   import TierCounts from '../../components/TierCounts.svelte';
   import { percent } from '../../lib/format';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { GameSummary } from '../../lib/types';
 
   let { game, onselect }: { game: GameSummary; onselect: () => void } = $props();
@@ -23,7 +24,7 @@
     </div>
     <div class="row">
       <ProgressBar value={game.progress} height={5} />
-      <span class="percent">{percent(game.progress)} %</span>
+      <span class="percent">{t.percent(percent(game.progress))}</span>
     </div>
   </div>
 </button>

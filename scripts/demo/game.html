@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;width:1600px;height:900px;overflow:hidden;background:#01060f;font-family:"Avenir Next","Helvetica Neue",sans-serif}
+.sea{position:absolute;inset:0;background:radial-gradient(ellipse 60% 45% at 50% -5%,rgba(90,200,255,.55),transparent 70%),linear-gradient(180deg,#0b4a78 0%,#06315a 28%,#031a36 60%,#010812 100%)}
+.ray{position:absolute;top:-80px;width:140px;height:1100px;background:linear-gradient(180deg,rgba(160,230,255,.22),rgba(160,230,255,0) 75%);transform-origin:top center;filter:blur(6px)}
+.glow{position:absolute;border-radius:50%;filter:blur(2px)}
+.hud{position:absolute;color:#cdeeff;letter-spacing:.08em;text-shadow:0 0 12px rgba(80,200,255,.6)}
+.bar{width:260px;height:10px;border-radius:6px;background:rgba(205,238,255,.15);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;width:64%;background:linear-gradient(90deg,#3fd6ff,#9ff3ff)}
+</style></head><body>
+<div class="sea"></div>
+<div class="ray" style="left:420px;transform:rotate(14deg)"></div>
+<div class="ray" style="left:640px;transform:rotate(6deg);width:200px"></div>
+<div class="ray" style="left:900px;transform:rotate(-4deg)"></div>
+<div class="ray" style="left:1150px;transform:rotate(-12deg);width:110px"></div>
+<svg width="1600" height="900" style="position:absolute;inset:0">
+ <defs>
+  <radialGradient id="lamp"><stop offset="0" stop-color="#fff6c8"/><stop offset=".25" stop-color="#ffd25a" stop-opacity=".9"/><stop offset="1" stop-color="#ffb02e" stop-opacity="0"/></radialGradient>
+  <radialGradient id="jelly"><stop offset="0" stop-color="#ffb8f4"/><stop offset="1" stop-color="#c04fd8" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a2240"/><stop offset="1" stop-color="#020812"/></linearGradient>
+ </defs>
+ <path d="M0 760 C180 700 260 640 380 690 C470 730 560 620 700 650 C820 680 900 760 1040 720 C1180 680 1260 600 1400 640 C1500 670 1560 700 1600 690 L1600 900 L0 900Z" fill="url(#rock)"/>
+ <path d="M0 830 C220 790 420 840 640 810 C860 780 1060 850 1280 815 C1420 795 1520 820 1600 810 L1600 900 L0 900Z" fill="#01050c"/>
+ <g stroke="#0f5c4d" stroke-width="9" fill="none" stroke-linecap="round" opacity=".9">
+  <path d="M150 800 C130 720 180 660 150 580 C130 520 170 470 160 430"/>
+  <path d="M190 810 C210 740 170 690 200 620 C220 570 190 530 205 500"/>
+  <path d="M1380 760 C1360 690 1410 640 1385 570 C1370 520 1400 480 1392 450"/>
+  <path d="M1430 770 C1450 700 1415 650 1440 600"/>
+ </g>
+ <circle cx="930" cy="470" r="150" fill="url(#lamp)" opacity=".85"/>
+ <g transform="translate(905 450)">
+  <ellipse cx="0" cy="0" rx="34" ry="16" fill="#08182c"/>
+  <path d="M-30 0 L-78 -14 L-74 12 Z" fill="#08182c"/>
+  <path d="M28 -4 C60 -20 78 -10 84 0 C78 10 60 18 28 6Z" fill="#0b2038"/>
+  <circle cx="26" cy="-2" r="7" fill="#ffe9a0"/>
+ </g>
+ <g opacity=".9">
+  <circle cx="1210" cy="300" r="60" fill="url(#jelly)"/>
+  <path d="M1180 300 Q1210 250 1240 300Z" fill="#f6a6ee" opacity=".8"/>
+  <path d="M1188 300 C1185 340 1195 360 1188 390 M1205 300 C1208 345 1200 370 1206 400 M1222 300 C1220 340 1230 360 1224 385" stroke="#f6a6ee" stroke-width="2.5" fill="none" opacity=".7"/>
+  <circle cx="380" cy="360" r="40" fill="url(#jelly)" opacity=".7"/>
+  <path d="M360 360 Q380 328 400 360Z" fill="#9fe7ff" opacity=".7"/>
+ </g>
+ <g fill="#bfefff" opacity=".55">
+  <circle cx="600" cy="520" r="4"/><circle cx="612" cy="480" r="3"/><circle cx="596" cy="440" r="5"/><circle cx="1020" cy="380" r="3"/><circle cx="1030" cy="340" r="4"/>
+  <circle cx="300" cy="200" r="2"/><circle cx="800" cy="150" r="2"/><circle cx="1300" cy="520" r="2"/><circle cx="1100" cy="610" r="2"/><circle cx="500" cy="640" r="2"/>
+ </g>
+</svg>
+<div class="hud" style="left:48px;top:40px;font-size:15px;opacity:.9">OBJECTIVE<div style="font-size:24px;letter-spacing:.02em;margin-top:6px">Reach the ocean floor</div></div>
+<div class="hud" style="left:48px;bottom:44px;font-size:14px">OXYGEN<div class="bar"><i></i></div></div>
+<div class="hud" style="right:56px;bottom:40px;text-align:right;font-size:14px">DEPTH<div style="font-size:40px;letter-spacing:.02em">1,240 m</div></div>
+</body></html>

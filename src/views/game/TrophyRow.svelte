@@ -4,19 +4,21 @@
   import Crystal from '../../components/Crystal.svelte';
   import Icon from '../../components/Icon.svelte';
   import { api } from '../../lib/api';
-  import { earnedDate, tierLabels } from '../../lib/format';
+  import { earnedDate } from '../../lib/format';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { TrophyTier, TrophyView } from '../../lib/types';
 
-  let { trophy, isGrayscaleWhenLocked }: { trophy: TrophyView; isGrayscaleWhenLocked: boolean } = $props();
+  let { trophy, gameTitle, isGrayscaleWhenLocked }: { trophy: TrophyView; gameTitle: string; isGrayscaleWhenLocked: boolean } = $props();
 
   const REGULAR_TIERS: TrophyTier[] = ['bronze', 'silver', 'gold'];
 
   let isRevealed = $state(false);
   let iconFailed = $state(false);
   let isConcealed = $derived(trophy.isHidden && !trophy.isEarned && !isRevealed);
-  let toggleLabel = $derived(trophy.isEarned ? "Retirer l'obtention" : 'Marquer comme obtenu');
+  let toggleLabel = $derived(trophy.isEarned ? t.trophy.unmarkEarned : t.trophy.markEarned);
+  let detail = $derived(trophy.isGeneratedPlatinum ? t.trophy.generatedPlatinum(gameTitle) : trophy.detail);
   let earnedText = $derived.by(() => {
-    const date = trophy.earnedAt ? `Obtenu le ${earnedDate(trophy.earnedAt)}` : 'Obtenu';
+    const date = trophy.earnedAt ? t.trophy.earnedOn(earnedDate(trophy.earnedAt)) : t.trophy.earned;
     return trophy.earnedOn.length > 0 ? `${date} · ${trophy.earnedOn.join(', ')}` : date;
   });
 
@@ -32,11 +34,11 @@
       items.push(await MenuItem.new({ text: toggleLabel, action: toggleEarned }));
     }
     if (trophy.canChangeTier) {
-      items.push(await MenuItem.new({ text: 'Grade du trophée', enabled: false }));
+      items.push(await MenuItem.new({ text: t.trophy.tierMenu, enabled: false }));
       for (const tier of REGULAR_TIERS) {
         items.push(
           await CheckMenuItem.new({
-            text: tierLabels[tier],
+            text: t.tiers[tier],
             checked: trophy.tier === tier,
             action: () => api.setTrophyTier(trophy.reference, tier),
           }),
@@ -44,7 +46,7 @@
       }
       if (trophy.hasTierOverride) {
         items.push(await PredefinedMenuItem.new({ item: 'Separator' }));
-        items.push(await MenuItem.new({ text: 'Rétablir le grade automatique', action: () => api.setTrophyTier(trophy.reference, null) }));
+        items.push(await MenuItem.new({ text: t.trophy.automaticTier, action: () => api.setTrophyTier(trophy.reference, null) }));
       }
     }
     await (await Menu.new({ items })).popup();
@@ -63,18 +65,18 @@
   </div>
 
   <div class="text">
-    <span class="name" class:locked={!trophy.isEarned}>{isConcealed ? 'Trophée caché' : trophy.name}</span>
-    <span class="detail secondary">{isConcealed ? 'Continuez à jouer pour découvrir ce trophée.' : trophy.detail}</span>
+    <span class="name" class:locked={!trophy.isEarned}>{isConcealed ? t.trophy.hiddenName : trophy.name}</span>
+    <span class="detail secondary">{isConcealed ? t.trophy.hiddenDetail : detail}</span>
     {#if trophy.isEarned}<span class="earned">{earnedText}</span>{/if}
   </div>
 
   {#if trophy.isHidden && !trophy.isEarned}
-    <button class="reveal secondary" onclick={() => (isRevealed = !isRevealed)}>{isRevealed ? 'Masquer' : 'Afficher'}</button>
+    <button class="reveal secondary" onclick={() => (isRevealed = !isRevealed)}>{isRevealed ? t.trophy.conceal : t.trophy.reveal}</button>
   {/if}
 
   <div class="tier">
     <Crystal tier={trophy.tier} size={22} dimmed={!trophy.isEarned} />
-    <span class="secondary">{tierLabels[trophy.tier]}</span>
+    <span class="secondary">{t.tiers[trophy.tier]}</span>
   </div>
 
   {#if trophy.canToggleEarned}

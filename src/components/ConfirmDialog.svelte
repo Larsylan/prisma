@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { t } from '../lib/i18n/index.svelte';
+
   let {
     title,
     message,
@@ -21,7 +23,7 @@
     <h2>{title}</h2>
     <p class="secondary">{message}</p>
     <div class="actions">
-      <button class="button" onclick={onCancel}>Annuler</button>
+      <button class="button" onclick={onCancel}>{t.cancel}</button>
       <button class="button danger" onclick={onConfirm}>{confirmLabel}</button>
     </div>
   </div>

@@ -87,29 +87,6 @@ impl Preset {
         Preset::SpectralBlack,
     ];
 
-    pub fn name(self) -> &'static str {
-        match self {
-            Preset::Night => "Nuit",
-            Preset::Indigo => "Indigo",
-            Preset::Amethyst => "Améthyste",
-            Preset::Sakura => "Sakura",
-            Preset::Ruby => "Rubis",
-            Preset::Ember => "Braise",
-            Preset::Amber => "Ambre",
-            Preset::Emerald => "Émeraude",
-            Preset::Ocean => "Océan",
-            Preset::Aurora => "Aurore",
-            Preset::Twilight => "Crépuscule",
-            Preset::Graphite => "Graphite",
-            Preset::NeonCyan => "Néon cyan",
-            Preset::NeonMagenta => "Néon magenta",
-            Preset::NeonAcid => "Néon acide",
-            Preset::Synthwave => "Synthwave",
-            Preset::WhiteNeon => "Blanc néon",
-            Preset::SpectralBlack => "Noir spectral",
-        }
-    }
-
     pub fn palette(self) -> ThemePalette {
         match self {
             Preset::Night => classic([0x0b1d46, 0x050b1e, 0x02040c], 0x2d6bf6, 0x6fb1ff),

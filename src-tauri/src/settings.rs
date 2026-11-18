@@ -6,6 +6,8 @@ use prisma_core::library::GroupingMode;
 use prisma_core::theme::Preset;
 use serde::{Deserialize, Serialize};
 
+use crate::i18n::Language;
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum ToastPosition {
@@ -27,6 +29,7 @@ pub struct Settings {
     pub toast_duration_seconds: u64,
     pub toast_position: ToastPosition,
     pub theme: Preset,
+    pub language: Language,
 }
 
 impl Default for Settings {
@@ -41,12 +44,16 @@ impl Default for Settings {
             toast_duration_seconds: 6,
             toast_position: ToastPosition::TopRight,
             theme: Preset::default(),
+            language: Language::default(),
         }
     }
 }
 
 fn default_profile_name() -> String {
-    ["USER", "USERNAME"].iter().find_map(|variable| std::env::var(variable).ok()).unwrap_or_else(|| "Joueur".into())
+    ["USER", "USERNAME"]
+        .iter()
+        .find_map(|variable| std::env::var(variable).ok())
+        .unwrap_or_else(|| Language::System.locale().texts().player.into())
 }
 
 /// Réglages conservés dans `settings.json`, à côté de la bibliothèque.

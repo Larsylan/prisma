@@ -1,7 +1,7 @@
 <script lang="ts">
   import Crystal from '../../components/Crystal.svelte';
   import { api } from '../../lib/api';
-  import { tierLabels, toastPositionLabels } from '../../lib/format';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { ToastPosition, TrophyTier } from '../../lib/types';
   import Section from './Section.svelte';
   import type { Save } from './saving';
@@ -16,26 +16,26 @@
   const TIERS: TrophyTier[] = ['bronze', 'silver', 'gold', 'platinum'];
 </script>
 
-<Section title="Notifications">
+<Section title={t.settings.notifications}>
   <label class="toggle">
     <input type="checkbox" bind:checked={soundEnabled} onchange={() => save()} />
-    Son
+    {t.settings.sound}
   </label>
   <label class="field inline">
-    <span>Position</span>
+    <span>{t.settings.position}</span>
     <select class="select" bind:value={position} onchange={() => save()}>
-      {#each Object.entries(toastPositionLabels) as [value, label] (value)}
+      {#each Object.entries(t.settings.positions) as [value, label] (value)}
         <option value={value as ToastPosition}>{label}</option>
       {/each}
     </select>
   </label>
   <label class="field inline">
-    <span>Durée : {durationSeconds} s</span>
+    <span>{t.settings.duration(durationSeconds)}</span>
     <input type="range" min="3" max="12" step="1" bind:value={durationSeconds} onchange={() => save()} />
   </label>
   <div class="buttons">
     {#each TIERS as tier (tier)}
-      <button class="button test" onclick={() => api.testNotification(tier)}><Crystal {tier} size={13} />{tierLabels[tier]}</button>
+      <button class="button test" onclick={() => api.testNotification(tier)}><Crystal {tier} size={13} />{t.tiers[tier]}</button>
     {/each}
   </div>
 </Section>

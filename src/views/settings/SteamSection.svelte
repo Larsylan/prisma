@@ -3,7 +3,9 @@
 
   import ExternalLink from '../../components/ExternalLink.svelte';
   import { api } from '../../lib/api';
+  import { t } from '../../lib/i18n/index.svelte';
   import { appState } from '../../lib/state.svelte';
+  import { steamLocalText, steamWebText } from '../../lib/status';
   import Section from './Section.svelte';
   import { debounced, TEXT_SAVE_DELAY_MS, type Save } from './saving';
 
@@ -18,25 +20,25 @@
   let apiKey = $state('');
   const saveApiKey = debounced(() => api.setSteamApiKey(apiKey));
 
+  let steamLocal = $derived(appState.status ? steamLocalText(appState.status.steamLocal) : '');
+  let steamWeb = $derived(appState.status ? steamWebText(appState.status.steamWeb) : '');
+
   onMount(async () => {
     apiKey = await api.steamApiKey();
   });
 </script>
 
-<Section
-  title="Steam"
-  footer="Sans clé, les succès des jeux lancés sur cet ordinateur sont lus directement depuis Steam. La clé permet d'importer l'historique de tous vos jeux (profil public requis) ; elle est rangée dans le coffre de votre système. La rareté sert uniquement à attribuer bronze/argent/or : elle n'est jamais affichée."
->
-  <div class="value"><span>État</span><span class="secondary">{appState.status?.steamLocal || '—'}</span></div>
-  {#if appState.status?.steamWeb}
-    <div class="value"><span>Historique</span><span class="secondary">{appState.status.steamWeb}</span></div>
+<Section title="Steam" footer={t.settings.steamFooter}>
+  <div class="value"><span>{t.settings.steamState}</span><span class="secondary">{steamLocal || '—'}</span></div>
+  {#if steamWeb}
+    <div class="value"><span>{t.settings.steamHistory}</span><span class="secondary">{steamWeb}</span></div>
   {/if}
   <div class="value">
-    <span>Détection</span>
-    <span class="secondary">{appState.status?.steamWatching ? 'Temps réel (cache local du client Steam)' : 'Inactive'}</span>
+    <span>{t.settings.steamDetection}</span>
+    <span class="secondary">{appState.status?.steamWatching ? t.settings.steamRealTime : t.settings.steamInactive}</span>
   </div>
   <label class="field">
-    <span>Clé Steam Web API (optionnelle)</span>
+    <span>{t.settings.steamApiKey}</span>
     <input class="text-input" type="password" bind:value={apiKey} oninput={() => saveApiKey(TEXT_SAVE_DELAY_MS)} />
   </label>
   <label class="field">
@@ -45,12 +47,12 @@
   </label>
   <label class="toggle">
     <input type="checkbox" bind:checked={useRarity} onchange={() => save()} />
-    Calculer les grades via la rareté Steam
+    {t.settings.steamRarity}
   </label>
   <div class="buttons">
-    <button class="button" disabled={!apiKey.trim() || appState.status?.steamWebImporting} onclick={() => api.importSteamHistory()}>
-      Importer l'historique complet
+    <button class="button" disabled={!apiKey.trim() || appState.status?.steamWeb.state === 'importing'} onclick={() => api.importSteamHistory()}>
+      {t.settings.steamImport}
     </button>
-    <ExternalLink href="https://steamcommunity.com/dev/apikey">Obtenir une clé</ExternalLink>
+    <ExternalLink href="https://steamcommunity.com/dev/apikey">{t.settings.steamGetKey}</ExternalLink>
   </div>
 </Section>

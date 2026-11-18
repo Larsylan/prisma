@@ -8,31 +8,31 @@
   import ConfirmDialog from '../../components/ConfirmDialog.svelte';
   import { api } from '../../lib/api';
   import { percent } from '../../lib/format';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { GameDetail, TrophyTier, TrophyView } from '../../lib/types';
   import TrophyRow from './TrophyRow.svelte';
 
   let { game, onBack }: { game: GameDetail; onBack: () => void } = $props();
 
   type Filter = 'all' | 'earned' | 'locked';
-  type Sort = 'original' | 'earnedDate' | 'tier';
-  const FILTER_OPTIONS: { value: Filter; label: string }[] = [
-    { value: 'all', label: 'Tous' },
-    { value: 'earned', label: 'Obtenus' },
-    { value: 'locked', label: 'Non obtenus' },
-  ];
-  const SORT_LABELS: Record<Sort, string> = { original: 'Ordre par défaut', earnedDate: "Date d'obtention", tier: 'Grade' };
+  type Sort = keyof typeof t.game.sorts;
   const TIER_RANK: Record<TrophyTier, number> = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
 
   let filter = $state<Filter>('all');
   let sort = $state<Sort>('original');
   let isConfirmingRemoval = $state(false);
 
+  let filterOptions = $derived<{ value: Filter; label: string }[]>([
+    { value: 'all', label: t.all },
+    { value: 'earned', label: t.game.filters.earned },
+    { value: 'locked', label: t.game.filters.locked },
+  ]);
   let trophies = $derived(sorted(game.trophies.filter(matchesFilter)));
   let summary = $derived(
     [
-      `${game.earnedCount} sur ${game.trophyCount} trophées obtenus`,
-      game.isGroup ? `versions ${game.systems.join(', ')} réunies` : null,
-      game.platforms.includes('nintendo') ? 'cochez les trophées Switch au fil de votre progression' : null,
+      t.game.earnedSummary(game.earnedCount, game.trophyCount),
+      game.isGroup ? t.game.mergedVersions(game.systems.join(', ')) : null,
+      game.platforms.includes('nintendo') ? t.game.switchHint : null,
     ]
       .filter(Boolean)
       .join(' · '),
@@ -67,9 +67,9 @@
 
 <div class="detail">
   <div class="toolbar" data-tauri-drag-region>
-    <button class="back" onclick={onBack}><Icon name="back" /> Trophées</button>
+    <button class="back" onclick={onBack}><Icon name="back" /> {t.backToTrophies}</button>
     {#if game.isRemovable}
-      <button class="remove secondary" onclick={() => (isConfirmingRemoval = true)}>Retirer de la bibliothèque</button>
+      <button class="remove secondary" onclick={() => (isConfirmingRemoval = true)}>{t.game.remove}</button>
     {/if}
   </div>
 
@@ -83,7 +83,7 @@
         <h1>{game.title}</h1>
         <div class="progress">
           <div class="bar"><ProgressBar value={game.progress} height={7} /></div>
-          <strong>{percent(game.progress)} %</strong>
+          <strong>{t.percent(percent(game.progress))}</strong>
         </div>
         <TierCounts counts={game.tierCounts.map(({ tier, earned, total }) => ({ tier, text: `${earned}/${total}` }))} size={15} />
         <span class="secondary summary">{summary}</span>
@@ -91,9 +91,9 @@
     </section>
 
     <div class="controls">
-      <PillPicker options={FILTER_OPTIONS} bind:value={filter} />
-      <select class="select" bind:value={sort} aria-label="Tri">
-        {#each Object.entries(SORT_LABELS) as [value, label] (value)}
+      <PillPicker options={filterOptions} bind:value={filter} />
+      <select class="select" bind:value={sort} aria-label={t.sortBy}>
+        {#each Object.entries(t.game.sorts) as [value, label] (value)}
           <option {value}>{label}</option>
         {/each}
       </select>
@@ -101,7 +101,7 @@
 
     <div class="trophies" role="list">
       {#each trophies as trophy (trophy.id)}
-        <TrophyRow {trophy} isGrayscaleWhenLocked={game.platform === 'playstation'} />
+        <TrophyRow {trophy} gameTitle={game.title} isGrayscaleWhenLocked={game.platform === 'playstation'} />
       {/each}
     </div>
   </div>
@@ -109,9 +109,9 @@
 
 {#if isConfirmingRemoval}
   <ConfirmDialog
-    title="Retirer {game.title} ?"
-    message="Les trophées cochés pour ce jeu seront perdus."
-    confirmLabel="Retirer"
+    title={t.game.removeTitle(game.title)}
+    message={t.game.removeMessage}
+    confirmLabel={t.game.removeConfirm}
     onConfirm={remove}
     onCancel={() => (isConfirmingRemoval = false)}
   />

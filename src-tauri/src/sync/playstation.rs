@@ -2,13 +2,13 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use chrono::Local;
+use chrono::Utc;
 use prisma_core::domain::{Game, GameId};
 use prisma_core::playstation::{PsnAuthenticator, PsnError, PsnTrophyClient, TitleSummary};
 use tauri::async_runtime::JoinHandle;
 use tokio::task::JoinSet;
 
-use super::status::StatusBoard;
+use super::status::{PlayStationState, StatusBoard};
 use crate::settings::SettingsStore;
 use crate::store::LibraryStore;
 
@@ -52,14 +52,14 @@ impl PlayStationSync {
     }
 
     pub async fn connect(&self, npsso: &str) -> Result<(), PsnError> {
-        self.set_message("Connexion…");
+        self.set_state(PlayStationState::Connecting);
         if let Err(error) = self.authenticator.connect(npsso).await {
-            self.set_message(&error.to_string());
+            self.set_state(PlayStationState::Failed { failure: (&error).into() });
             return Err(error);
         }
         self.status.update(|status| {
             status.playstation_connected = true;
-            status.playstation = "Connecté.".into();
+            status.playstation = PlayStationState::Connected;
         });
         self.sync(false).await;
         Ok(())
@@ -69,7 +69,7 @@ impl PlayStationSync {
         self.authenticator.disconnect().await;
         self.status.update(|status| {
             status.playstation_connected = false;
-            status.playstation = "Déconnecté.".into();
+            status.playstation = PlayStationState::Disconnected;
         });
         if removing_trophies {
             self.store.remove_all_on(prisma_core::domain::Platform::Playstation);
@@ -82,17 +82,14 @@ impl PlayStationSync {
             return;
         }
         if !announcing {
-            self.set_message("Synchronisation PlayStation…");
+            self.set_state(PlayStationState::Syncing);
         }
         match self.sync_changed_titles(announcing).await {
-            Ok(title_count) => {
-                let time = Local::now().format("%H:%M");
-                self.set_message(&format!("PlayStation synchronisé · {title_count} jeux · {time}"));
-            }
+            Ok(game_count) => self.set_state(PlayStationState::Synced { game_count, at: Utc::now() }),
             Err(error) => {
                 let is_connected = self.authenticator.is_connected().await;
                 self.status.update(|status| {
-                    status.playstation = error.to_string();
+                    status.playstation = PlayStationState::Failed { failure: (&error).into() };
                     status.playstation_connected = is_connected;
                 });
             }
@@ -132,7 +129,7 @@ impl PlayStationSync {
             }
             updated += batch.len();
             if !announcing {
-                self.set_message(&format!("PlayStation : {updated}/{} jeux mis à jour…", changed.len()));
+                self.set_state(PlayStationState::Updating { updated, total: changed.len() });
             }
         }
         Ok(titles.len())
@@ -156,8 +153,8 @@ impl PlayStationSync {
         requests.join_all().await
     }
 
-    fn set_message(&self, message: &str) {
-        self.status.update(|status| status.playstation = message.to_owned());
+    fn set_state(&self, state: PlayStationState) {
+        self.status.update(|status| status.playstation = state);
     }
 }
 

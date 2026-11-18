@@ -46,20 +46,21 @@ fn icon() -> tauri::Result<Image<'static>> {
 }
 
 fn menu(app: &AppHandle, services: &Arc<Services>) -> tauri::Result<Menu<Wry>> {
+    let texts = services.settings.get().language.locale().texts();
     let games = services.store.entries();
-    let summary = format!("Niveau {} · {} platine(s)", games.level().value, games.earned_count(TrophyTier::Platinum));
+    let summary = format!("{} {} · {} {}", texts.level, games.level().value, games.earned_count(TrophyTier::Platinum), texts.platinums);
     let mut items: Vec<Box<dyn IsMenuItem<Wry>>> = vec![Box::new(disabled(app, &summary)?), Box::new(PredefinedMenuItem::separator(app)?)];
     for earned in games.recently_earned(RECENT_TROPHY_COUNT) {
-        let line = format!("{} — {} ({})", tier_label(earned.trophy.tier), earned.trophy.name, earned.game.title);
+        let line = format!("{} — {} ({})", texts.tier(earned.trophy.tier), earned.trophy.name, earned.game.title);
         items.push(Box::new(disabled(app, &line)?));
     }
     items.push(Box::new(PredefinedMenuItem::separator(app)?));
-    items.push(Box::new(MenuItem::with_id(app, OPEN, "Ouvrir Prisma", true, Some("CmdOrCtrl+O"))?));
-    items.push(Box::new(MenuItem::with_id(app, SETTINGS, "Réglages…", true, Some("CmdOrCtrl+,"))?));
-    items.push(Box::new(MenuItem::with_id(app, TEST, "Notification de test", true, None::<&str>)?));
-    items.push(Box::new(MenuItem::with_id(app, SYNC, "Synchroniser", true, None::<&str>)?));
+    items.push(Box::new(MenuItem::with_id(app, OPEN, texts.open, true, Some("CmdOrCtrl+O"))?));
+    items.push(Box::new(MenuItem::with_id(app, SETTINGS, texts.settings, true, Some("CmdOrCtrl+,"))?));
+    items.push(Box::new(MenuItem::with_id(app, TEST, texts.test_notification, true, None::<&str>)?));
+    items.push(Box::new(MenuItem::with_id(app, SYNC, texts.sync, true, None::<&str>)?));
     items.push(Box::new(PredefinedMenuItem::separator(app)?));
-    items.push(Box::new(MenuItem::with_id(app, QUIT, "Quitter", true, Some("CmdOrCtrl+Q"))?));
+    items.push(Box::new(MenuItem::with_id(app, QUIT, texts.quit, true, Some("CmdOrCtrl+Q"))?));
     let references: Vec<&dyn IsMenuItem<Wry>> = items.iter().map(|item| item.as_ref()).collect();
     Menu::with_items(app, &references)
 }
@@ -76,7 +77,7 @@ fn handle(app: &AppHandle, id: &str) {
             show_main_window(app);
             let _ = app.emit(events::NAVIGATE, "settings");
         }
-        TEST => services.notifier.announce_test(None),
+        TEST => services.notifier.announce_test(None, services.settings.get().language.locale().texts()),
         SYNC => {
             let services = Arc::clone(&services);
             tauri::async_runtime::spawn(async move { services.coordinator.sync_all().await });
@@ -91,14 +92,5 @@ pub fn show_main_window(app: &AppHandle) {
         let _ = window.show();
         let _ = window.unminimize();
         let _ = window.set_focus();
-    }
-}
-
-fn tier_label(tier: TrophyTier) -> &'static str {
-    match tier {
-        TrophyTier::Bronze => "Bronze",
-        TrophyTier::Silver => "Argent",
-        TrophyTier::Gold => "Or",
-        TrophyTier::Platinum => "Platine",
     }
 }

@@ -19,17 +19,17 @@ struct FixtureGame {
 const GAMES: [FixtureGame; 3] = [
     FixtureGame {
         app_id: 9_900_001,
-        name: "Lumière des Abysses",
-        achievements: &["Première plongée", "Récif oublié", "Lanterne vive", "Courant profond", "Fond de l'océan"],
+        name: "Abyssal Light",
+        achievements: &["First Dive", "Forgotten Reef", "Bright Lantern", "Deep Current", "Ocean Floor"],
         earned: 4,
     },
     FixtureGame {
         app_id: 9_900_002,
-        name: "Cité de Verre",
-        achievements: &["Premier vitrail", "Architecte", "Tour de cristal", "Prisme parfait"],
+        name: "Glass City",
+        achievements: &["First Window", "Architect", "Crystal Tower", "Perfect Prism"],
         earned: 2,
     },
-    FixtureGame { app_id: 9_900_003, name: "Orbite Basse", achievements: &["Décollage", "Mise en orbite", "Retour sur Terre"], earned: 3 },
+    FixtureGame { app_id: 9_900_003, name: "Low Orbit", achievements: &["Liftoff", "In Orbit", "Back to Earth"], earned: 3 },
 ];
 
 fn main() -> std::io::Result<()> {

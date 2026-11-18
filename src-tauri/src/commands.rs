@@ -10,10 +10,12 @@ use tauri::{AppHandle, Emitter, State};
 use tauri_plugin_autostart::ManagerExt;
 
 use crate::events;
+use crate::i18n::Locale;
 use crate::services::Services;
 use crate::settings::Settings;
-use crate::sync::SyncStatus;
+use crate::sync::{Failure, SyncStatus};
 use crate::themes::{self, ThemeOption};
+use crate::tray;
 use crate::views::{CatalogItem, GameDetail, LibraryOverview};
 
 type Shared<'a> = State<'a, Arc<Services>>;
@@ -84,8 +86,8 @@ pub async fn sync_playstation(services: Shared<'_>) -> Result<(), ()> {
 }
 
 #[tauri::command]
-pub async fn connect_playstation(services: Shared<'_>, npsso: String) -> Result<(), String> {
-    services.playstation.connect(&npsso).await.map_err(|error| error.to_string())
+pub async fn connect_playstation(services: Shared<'_>, npsso: String) -> Result<(), Failure> {
+    services.playstation.connect(&npsso).await.map_err(|error| Failure::from(&error))
 }
 
 #[tauri::command]
@@ -132,6 +134,17 @@ pub fn update_settings(app: AppHandle, services: Shared<'_>, settings: Settings)
             log::error!("Changement de thème impossible : {error}");
         }
     }
+    if previous.language != settings.language {
+        tray::refresh(&app, &services);
+        if let Err(error) = app.emit(events::LANGUAGE_CHANGED, settings.language.locale()) {
+            log::error!("Changement de langue impossible : {error}");
+        }
+    }
+}
+
+#[tauri::command]
+pub fn locale(services: Shared<'_>) -> Locale {
+    services.settings.get().language.locale()
 }
 
 #[tauri::command]
@@ -146,7 +159,7 @@ pub fn active_theme(services: Shared<'_>) -> ThemePalette {
 
 #[tauri::command]
 pub fn test_notification(services: Shared<'_>, tier: Option<TrophyTier>) {
-    services.notifier.announce_test(tier);
+    services.notifier.announce_test(tier, services.settings.get().language.locale().texts());
 }
 
 #[derive(Serialize)]

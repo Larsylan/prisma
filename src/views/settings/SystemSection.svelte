@@ -1,5 +1,6 @@
 <script lang="ts">
   import { api } from '../../lib/api';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { SystemInfo } from '../../lib/types';
   import Section from './Section.svelte';
 
@@ -11,12 +12,12 @@
   }
 </script>
 
-<Section title="Système">
+<Section title={t.settings.system}>
   <label class="toggle">
     <input type="checkbox" checked={system.launchAtLogin} onchange={(event) => toggleLaunchAtLogin(event.currentTarget.checked)} />
-    Lancer à l'ouverture de session
+    {t.settings.launchAtLogin}
   </label>
-  <div class="value"><span>Données</span><span class="secondary selectable">{system.dataDirectory}</span></div>
+  <div class="value"><span>{t.settings.dataDirectory}</span><span class="secondary selectable">{system.dataDirectory}</span></div>
 </Section>
 
 <style>

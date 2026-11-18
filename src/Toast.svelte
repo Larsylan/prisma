@@ -4,6 +4,7 @@
   import Crystal from './components/Crystal.svelte';
   import { api, events } from './lib/api';
   import { tierGradient } from './lib/colors';
+  import { t } from './lib/i18n/index.svelte';
   import { applyPalette } from './lib/palette';
   import type { Announcement } from './lib/types';
 
@@ -42,7 +43,7 @@
     <div class="text">
       <div class="headline">
         <Crystal tier={announcement.tier} size={13} />
-        {announcement.tier === 'platinum' ? 'Vous avez obtenu un trophée de platine !' : 'Vous avez obtenu un trophée !'}
+        {announcement.tier === 'platinum' ? t.toast.platinum : t.toast.trophy}
       </div>
       <div class="name">{announcement.trophyName}</div>
       <div class="game">{announcement.gameTitle}</div>
@@ -53,7 +54,11 @@
 <style>
   .toast {
     position: absolute;
-    inset: 10px;
+    /* Hauteur fixe : sous Linux, GTK peut agrandir la fenêtre au-delà de la carte. */
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    height: 100px;
     display: flex;
     align-items: center;
     gap: 14px;

@@ -12,7 +12,7 @@ use prisma_core::domain::Platform;
 use prisma_core::switch::{self, CatalogEntry};
 
 pub use playstation::PlayStationSync;
-pub use status::{StatusBoard, SyncStatus};
+pub use status::{Failure, StatusBoard, SyncStatus};
 pub use steam_local::SteamLocalMonitor;
 pub use steam_recorder::SteamRecorder;
 pub use steam_titles::SteamTitles;

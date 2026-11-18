@@ -78,6 +78,8 @@ pub struct TrophyView {
     pub detail: String,
     pub tier: TrophyTier,
     pub is_hidden: bool,
+    /// Platine ajouté par Prisma aux jeux Steam et Switch ; l'interface traduit sa description.
+    pub is_generated_platinum: bool,
     pub icon_url: Option<String>,
     pub is_earned: bool,
     pub earned_at: Option<Timestamp>,
@@ -165,6 +167,7 @@ impl TrophyView {
             detail: trophy.detail.clone(),
             tier: trophy.tier,
             is_hidden: trophy.is_hidden,
+            is_generated_platinum: trophy.is_generated_platinum,
             icon_url: if trophy.is_earned { trophy.icon_url.clone() } else { trophy.locked_icon_url.clone().or(trophy.icon_url.clone()) },
             is_earned: trophy.is_earned,
             earned_at: trophy.earned_at,

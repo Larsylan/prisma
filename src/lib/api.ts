@@ -6,6 +6,7 @@ import type {
   CatalogItem,
   GameDetail,
   LibraryOverview,
+  Locale,
   Settings,
   SyncStatus,
   SystemInfo,
@@ -40,6 +41,7 @@ const tauriApi = {
   setLaunchAtLogin: (enabled: boolean) => invoke<void>('set_launch_at_login', { enabled }),
   themeGallery: () => invoke<ThemeOption[]>('theme_gallery'),
   activeTheme: () => invoke<ThemePalette>('active_theme'),
+  locale: () => invoke<Locale>('locale'),
 };
 
 const tauriEvents = {
@@ -52,6 +54,8 @@ const tauriEvents = {
   onToastHide: (handler: () => void): Promise<UnlistenFn> => listen('toast-hide', handler),
   onThemeChanged: (handler: (palette: ThemePalette) => void): Promise<UnlistenFn> =>
     listen<ThemePalette>('theme-changed', (event) => handler(event.payload)),
+  onLanguageChanged: (handler: (locale: Locale) => void): Promise<UnlistenFn> =>
+    listen<Locale>('language-changed', (event) => handler(event.payload)),
 };
 
 export type Api = typeof tauriApi;

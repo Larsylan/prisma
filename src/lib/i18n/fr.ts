@@ -1,0 +1,167 @@
+import type { GroupingMode, Platform, Preset, ToastPosition, TrophyTier } from '../types';
+
+/** Textes de référence : l'anglais doit fournir exactement les mêmes clés. */
+export const fr = {
+  tiers: { bronze: 'Bronze', silver: 'Argent', gold: 'Or', platinum: 'Platine' } satisfies Record<TrophyTier, string>,
+  platforms: { playstation: 'PlayStation', steam: 'Steam', nintendo: 'Switch' } satisfies Record<Platform, string>,
+  cancel: 'Annuler',
+  backToTrophies: 'Trophées',
+  sortBy: 'Tri',
+  all: 'Tous',
+  percent: (value: number) => `${value} %`,
+
+  library: {
+    sorts: { recent: 'Derniers obtenus', progress: 'Progression', alphabetical: 'Alphabétique' },
+    search: 'Rechercher un jeu',
+    emptyTitle: 'Aucun trophée pour le moment',
+    emptyHint: 'Connectez votre compte PlayStation et/ou Steam dans les réglages, ou ajoutez vos jeux Switch.',
+    openSettings: 'Ouvrir les réglages',
+    addSwitchGame: 'Ajouter un jeu Switch',
+    noMatch: 'Aucun jeu ne correspond',
+    steamWatching: 'Surveillance Steam en temps réel active',
+    steamNotWatching: 'Surveillance Steam inactive',
+    trophyLevel: (level: number) => `Niveau de trophée ${level}`,
+    levelProgress: (percent: number, nextLevel: number, points: string) => `${percent} % · niveau ${nextLevel} · ${points} points`,
+    trophyTotal: (count: string) => `${count} trophées`,
+    sync: 'Synchroniser',
+    settings: 'Réglages',
+  },
+
+  game: {
+    filters: { earned: 'Obtenus', locked: 'Non obtenus' },
+    sorts: { original: 'Ordre par défaut', earnedDate: "Date d'obtention", tier: 'Grade' },
+    earnedSummary: (earned: number, total: number) => `${earned} sur ${total} trophées obtenus`,
+    mergedVersions: (systems: string) => `versions ${systems} réunies`,
+    switchHint: 'cochez les trophées Switch au fil de votre progression',
+    remove: 'Retirer de la bibliothèque',
+    removeTitle: (title: string) => `Retirer ${title} ?`,
+    removeMessage: 'Les trophées cochés pour ce jeu seront perdus.',
+    removeConfirm: 'Retirer',
+  },
+
+  trophy: {
+    markEarned: 'Marquer comme obtenu',
+    unmarkEarned: "Retirer l'obtention",
+    earned: 'Obtenu',
+    earnedOn: (date: string) => `Obtenu le ${date}`,
+    tierMenu: 'Grade du trophée',
+    automaticTier: 'Rétablir le grade automatique',
+    hiddenName: 'Trophée caché',
+    hiddenDetail: 'Continuez à jouer pour découvrir ce trophée.',
+    reveal: 'Afficher',
+    conceal: 'Masquer',
+    generatedPlatinum: (game: string) => `Obtenir tous les trophées de ${game}.`,
+  },
+
+  switchPicker: {
+    title: 'Ajouter un jeu Switch',
+    done: 'Terminé',
+    intro:
+      "La Switch n'a pas de système de succès. Chaque jeu reçoit donc une liste de trophées sur le modèle PS5 : cochez-les au fil de votre progression, le platine s'obtient automatiquement.",
+    search: 'Rechercher dans le catalogue',
+    add: 'Ajouter',
+    added: 'Ajouté',
+    customTitle: 'Jeu absent du catalogue',
+    customPlaceholder: 'Titre du jeu',
+    customHint: "Il recevra une liste générique : premiers pas, boss, fin de l'histoire, 100 %, difficulté maximale…",
+  },
+
+  settings: {
+    title: 'Réglages',
+    profile: 'Profil',
+    displayName: 'Nom affiché',
+    language: 'Langue',
+    systemLanguage: 'Langue du système',
+    appearance: 'Apparence',
+    themes: {
+      night: 'Nuit',
+      indigo: 'Indigo',
+      amethyst: 'Améthyste',
+      sakura: 'Sakura',
+      ruby: 'Rubis',
+      ember: 'Braise',
+      amber: 'Ambre',
+      emerald: 'Émeraude',
+      ocean: 'Océan',
+      aurora: 'Aurore',
+      twilight: 'Crépuscule',
+      graphite: 'Graphite',
+      neonCyan: 'Néon cyan',
+      neonMagenta: 'Néon magenta',
+      neonAcid: 'Néon acide',
+      synthwave: 'Synthwave',
+      whiteNeon: 'Blanc néon',
+      spectralBlack: 'Noir spectral',
+    } satisfies Record<Preset, string>,
+
+    steamFooter:
+      "Sans clé, les succès des jeux lancés sur cet ordinateur sont lus directement depuis Steam. La clé permet d'importer l'historique de tous vos jeux (profil public requis) ; elle est rangée dans le coffre de votre système. La rareté sert uniquement à attribuer bronze/argent/or : elle n'est jamais affichée.",
+    steamState: 'État',
+    steamHistory: 'Historique',
+    steamDetection: 'Détection',
+    steamRealTime: 'Temps réel (cache local du client Steam)',
+    steamInactive: 'Inactive',
+    steamApiKey: 'Clé Steam Web API (optionnelle)',
+    steamRarity: 'Calculer les grades via la rareté Steam',
+    steamImport: "Importer l'historique complet",
+    steamGetKey: 'Obtenir une clé',
+
+    playstationFooter:
+      "Le jeton n'est utilisé qu'une fois pour obtenir un accès stocké dans le coffre de votre système. Il expire après environ 2 mois.",
+    playstationAccount: 'Compte',
+    playstationConnected: 'Connecté',
+    playstationPolling: 'Notifier les trophées gagnés sur console',
+    playstationSyncNow: 'Synchroniser maintenant',
+    playstationRemoveTrophies: 'Supprimer les trophées importés',
+    playstationDisconnect: 'Déconnecter',
+    playstationSignIn: 'Connectez-vous sur playstation.com dans votre navigateur.',
+    playstationOpen: 'Ouvrez',
+    playstationCopy: 'et copiez la valeur « npsso ».',
+    playstationToken: 'Jeton NPSSO (64 caractères)',
+    playstationConnect: 'Connecter',
+
+    grouping: 'Regroupement',
+    groupingFooter:
+      "Un jeu présent sur plusieurs systèmes (PS3, PS4, PS5, Vita, Steam, Switch) n'a qu'une entrée : les trophées de même nom sont fusionnés et comptés une seule fois.",
+    groupingLabel: 'Regrouper un même jeu',
+    groupingModes: {
+      all: 'Toutes les plateformes',
+      playstation: 'Versions PlayStation uniquement',
+      none: 'Aucun regroupement',
+    } satisfies Record<GroupingMode, string>,
+
+    notifications: 'Notifications',
+    sound: 'Son',
+    position: 'Position',
+    positions: { topRight: 'En haut à droite', topLeft: 'En haut à gauche' } satisfies Record<ToastPosition, string>,
+    duration: (seconds: number) => `Durée : ${seconds} s`,
+
+    system: 'Système',
+    launchAtLogin: "Lancer à l'ouverture de session",
+    dataDirectory: 'Données',
+  },
+
+  toast: {
+    trophy: 'Vous avez obtenu un trophée !',
+    platinum: 'Vous avez obtenu un trophée de platine !',
+  },
+
+  status: {
+    steamNotInstalled: "Steam n'est pas installé sur cet ordinateur.",
+    steamDetected: (count: number) => `${count} ${count > 1 ? 'jeux Steam détectés' : 'jeu Steam détecté'} en local`,
+    steamWebStarting: 'Steam Web : analyse de vos jeux…',
+    steamWebImporting: (analyzed: number, total: number) => `Steam Web : ${analyzed}/${total} jeux analysés…`,
+    steamWebImported: (count: number) => `Historique Steam synchronisé (${count} ${count > 1 ? 'jeux joués' : 'jeu joué'}).`,
+    playstationConnecting: 'Connexion…',
+    playstationConnected: 'Connecté.',
+    playstationSyncing: 'Synchronisation PlayStation…',
+    playstationUpdating: (updated: number, total: number) => `PlayStation : ${updated}/${total} jeux mis à jour…`,
+    playstationSynced: (count: number, time: string) => `PlayStation synchronisé · ${count} ${count > 1 ? 'jeux' : 'jeu'} · ${time}`,
+    invalidToken: 'Jeton NPSSO invalide ou expiré. Reconnectez-vous sur playstation.com puis récupérez-en un nouveau.',
+    notConnected: 'Compte PlayStation non connecté.',
+    httpError: (service: string, status: number) => `${service} : erreur HTTP ${status}.`,
+    networkError: (service: string, detail: string) => `${service} : ${detail}`,
+  },
+};
+
+export type Dictionary = typeof fr;

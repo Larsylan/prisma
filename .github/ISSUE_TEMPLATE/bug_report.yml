@@ -1,0 +1,42 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report a problem. Please never paste your NPSSO token, Steam Web API key or other secrets.
+  - type: dropdown
+    id: system
+    attributes:
+      label: System
+      options: [macOS, Windows, Linux]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Prisma version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Related source
+      multiple: true
+      options: [Steam, PlayStation Network, Nintendo Switch, Notifications, Interface, Installation]
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What you did, what you expected and what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log
+      description: |
+        The end of `Prisma.log`, if relevant. It is in `~/Library/Logs/io.github.larsylan.prisma` (macOS),
+        `%LOCALAPPDATA%\io.github.larsylan.prisma\logs` (Windows) or `~/.local/share/io.github.larsylan.prisma/logs` (Linux).
+      render: text

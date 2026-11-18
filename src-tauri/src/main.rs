@@ -4,6 +4,7 @@
 mod commands;
 mod environment;
 mod events;
+mod i18n;
 mod notifications;
 mod secrets;
 mod services;
@@ -81,6 +82,7 @@ fn main() {
             commands::set_launch_at_login,
             commands::theme_gallery,
             commands::active_theme,
+            commands::locale,
         ])
         .build(tauri::generate_context!())
         .expect("démarrage de Prisma")

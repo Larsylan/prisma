@@ -11,6 +11,7 @@ use tauri::AppHandle;
 use tokio::sync::mpsc;
 
 use crate::events::Announcer;
+use crate::i18n::Texts;
 use crate::settings::SettingsStore;
 pub use toast::ToastWindow;
 
@@ -48,9 +49,9 @@ impl Notifier {
     }
 
     /// Sans grade précisé, les notifications de test passent en revue chaque grade.
-    pub fn announce_test(&self, tier: Option<TrophyTier>) {
+    pub fn announce_test(&self, tier: Option<TrophyTier>, texts: &Texts) {
         let tier = tier.unwrap_or_else(|| TrophyTier::ALL[self.test_count.fetch_add(1, Ordering::Relaxed) % TrophyTier::ALL.len()]);
-        let trophy_name = if tier == TrophyTier::Platinum { "Légende vivante" } else { "Premier pas" };
+        let trophy_name = if tier == TrophyTier::Platinum { texts.test_platinum } else { texts.test_trophy };
         self.enqueue(Announcement { trophy_name: trophy_name.into(), tier, icon_url: None, game_title: "Prisma".into() });
     }
 

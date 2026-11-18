@@ -5,7 +5,7 @@ use prisma_core::steam::{Credentials, GameAchievements, OwnedGame, SteamClientCa
 use prisma_core::support::secrets::SecretStore;
 use tokio::task::JoinSet;
 
-use super::status::StatusBoard;
+use super::status::{StatusBoard, SteamWebState};
 use super::steam_recorder::SteamRecorder;
 use crate::settings::SettingsStore;
 
@@ -58,15 +58,12 @@ impl SteamWebImporter {
         if self.is_importing.swap(true, Ordering::AcqRel) {
             return;
         }
-        self.status.update(|status| status.steam_web_importing = true);
-        let message = match self.import(&credentials).await {
-            Ok(count) => format!("Historique Steam synchronisé ({count} jeux joués)."),
-            Err(error) => format!("Steam Web : {error}"),
+        self.status.update(|status| status.steam_web = SteamWebState::Importing { analyzed: 0, total: 0 });
+        let state = match self.import(&credentials).await {
+            Ok(game_count) => SteamWebState::Imported { game_count },
+            Err(error) => SteamWebState::Failed { failure: (&error).into() },
         };
-        self.status.update(|status| {
-            status.steam_web = message;
-            status.steam_web_importing = false;
-        });
+        self.status.update(|status| status.steam_web = state);
         self.is_importing.store(false, Ordering::Release);
     }
 
@@ -79,7 +76,7 @@ impl SteamWebImporter {
                 self.record(&owned, achievements);
             }
             analyzed += batch.len();
-            let progress = format!("Steam Web : {analyzed}/{} jeux analysés…", played.len());
+            let progress = SteamWebState::Importing { analyzed, total: played.len() };
             self.status.update(|status| status.steam_web = progress);
         }
         Ok(played.len())

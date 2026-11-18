@@ -16,6 +16,7 @@ function trophy(overrides: Partial<TrophyView>): TrophyView {
     detail: 'Vaincre un premier boss.',
     tier: 'bronze',
     isHidden: false,
+    isGeneratedPlatinum: false,
     iconUrl: null,
     isEarned: false,
     earnedAt: null,
@@ -29,7 +30,7 @@ function trophy(overrides: Partial<TrophyView>): TrophyView {
 
 describe('TrophyRow', () => {
   it('conceals a hidden trophy until it is revealed', async () => {
-    render(TrophyRow, { trophy: trophy({ isHidden: true }), isGrayscaleWhenLocked: false });
+    render(TrophyRow, { trophy: trophy({ isHidden: true }), gameTitle: 'Tiny Isles', isGrayscaleWhenLocked: false });
     expect(screen.getByText('Trophée caché')).toBeTruthy();
 
     await fireEvent.click(screen.getByRole('button', { name: 'Afficher' }));
@@ -39,7 +40,7 @@ describe('TrophyRow', () => {
 
   it('checks a Switch trophy by hand', async () => {
     const view = trophy({ canToggleEarned: true });
-    render(TrophyRow, { trophy: view, isGrayscaleWhenLocked: false });
+    render(TrophyRow, { trophy: view, gameTitle: 'Tiny Isles', isGrayscaleWhenLocked: false });
 
     await fireEvent.click(screen.getByRole('button', { name: 'Marquer comme obtenu' }));
 
@@ -49,7 +50,7 @@ describe('TrophyRow', () => {
   it('shows where and when a trophy was earned', () => {
     render(TrophyRow, {
       trophy: trophy({ isEarned: true, earnedAt: '2017-07-14T19:05:00Z', earnedOn: ['PS4', 'PS5'] }),
-      isGrayscaleWhenLocked: false,
+      gameTitle: 'Tiny Isles', isGrayscaleWhenLocked: false,
     });
 
     expect(screen.getByText(/Obtenu le 14 juillet 2017 .* · PS4, PS5/)).toBeTruthy();

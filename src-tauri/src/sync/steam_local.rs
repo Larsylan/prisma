@@ -6,7 +6,7 @@ use notify::{RecommendedWatcher, RecursiveMode, Watcher};
 use prisma_core::steam::{SteamClientCache, SteamLocalGame};
 use tokio::sync::mpsc;
 
-use super::status::StatusBoard;
+use super::status::{StatusBoard, SteamLocalState};
 use super::steam_recorder::SteamRecorder;
 
 /// Vérification de secours au cas où un événement du système de fichiers serait manqué.
@@ -42,7 +42,7 @@ impl SteamLocalMonitor {
 
     pub fn scan(self: &Arc<Self>) {
         let Some(cache) = self.steam_cache.as_ref() else {
-            self.status.update(|status| status.steam_local = "Steam n'est pas installé sur cet ordinateur.".into());
+            self.status.update(|status| status.steam_local = SteamLocalState::NotInstalled);
             return;
         };
         let account_id = cache.current_account_id();
@@ -54,9 +54,8 @@ impl SteamLocalMonitor {
             let monitor = Arc::clone(self);
             tauri::async_runtime::spawn(async move { monitor.refresh(app_id, false).await });
         }
-        let persona = cache.current_user().map(|user| user.persona_name).filter(|name| !name.is_empty());
-        let summary = format!("{} jeu(x) Steam détecté(s) en local", app_ids.len());
-        self.status.update(|status| status.steam_local = persona.map_or(summary.clone(), |persona| format!("{summary} · {persona}")));
+        let player = cache.current_user().map(|user| user.persona_name).filter(|name| !name.is_empty());
+        self.status.update(|status| status.steam_local = SteamLocalState::Detected { game_count: app_ids.len(), player });
     }
 
     fn start_watching(self: &Arc<Self>) {
@@ -193,7 +192,7 @@ mod tests {
 
         monitor(&app, steam.path()).scan();
 
-        assert_eq!(app.ui.last_status().unwrap().steam_local, "1 jeu(x) Steam détecté(s) en local · Alex");
+        assert_eq!(app.ui.last_status().unwrap().steam_local, SteamLocalState::Detected { game_count: 1, player: Some("Alex".into()) });
     }
 
     #[test]
@@ -205,6 +204,6 @@ mod tests {
 
         Arc::new(SteamLocalMonitor::new(None, recorder, Arc::clone(&app.status))).scan();
 
-        assert_eq!(app.ui.last_status().unwrap().steam_local, "Steam n'est pas installé sur cet ordinateur.");
+        assert_eq!(app.ui.last_status().unwrap().steam_local, SteamLocalState::NotInstalled);
     }
 }

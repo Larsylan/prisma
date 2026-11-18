@@ -1,7 +1,7 @@
 {
   "name": "prisma",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Trophy and achievement tracker for PlayStation, Steam and Nintendo Switch, with real-time notifications on macOS, Windows and Linux",
   "keywords": ["trophies", "achievements", "trophy-tracker", "playstation", "psn", "steam", "nintendo-switch", "tauri", "svelte"],
   "homepage": "https://github.com/Larsylan/prisma",

@@ -3,6 +3,7 @@
 
   import Icon from '../../components/Icon.svelte';
   import { api } from '../../lib/api';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { Settings, SystemInfo } from '../../lib/types';
   import AppearanceSection from './AppearanceSection.svelte';
   import GroupingSection from './GroupingSection.svelte';
@@ -33,13 +34,13 @@
 
 <div class="settings">
   <div class="toolbar" data-tauri-drag-region>
-    <button class="back" onclick={onBack}><Icon name="back" /> Trophées</button>
-    <h1 data-tauri-drag-region>Réglages</h1>
+    <button class="back" onclick={onBack}><Icon name="back" /> {t.backToTrophies}</button>
+    <h1 data-tauri-drag-region>{t.settings.title}</h1>
   </div>
 
   {#if settings && system}
     <div class="scroll">
-      <ProfileSection bind:name={settings.profileName} {save} />
+      <ProfileSection bind:name={settings.profileName} bind:language={settings.language} {save} />
       <AppearanceSection bind:theme={settings.theme} onChange={() => save()} />
       <SteamSection
         bind:steamId64={settings.steamId64}

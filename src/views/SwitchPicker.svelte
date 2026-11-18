@@ -5,6 +5,8 @@
   import SearchField from '../components/SearchField.svelte';
   import TierCounts from '../components/TierCounts.svelte';
   import { api } from '../lib/api';
+  import { matchesSearch } from '../lib/format';
+  import { t } from '../lib/i18n/index.svelte';
   import { appState } from '../lib/state.svelte';
   import type { CatalogItem } from '../lib/types';
 
@@ -15,7 +17,7 @@
   let search = $state('');
   let customTitle = $state('');
 
-  let visibleEntries = $derived(catalog.filter((item) => item.title.toLocaleLowerCase('fr').includes(search.trim().toLocaleLowerCase('fr'))));
+  let visibleEntries = $derived(catalog.filter((item) => matchesSearch(item.title, search)));
 
   onMount(loadCatalog);
 
@@ -44,17 +46,14 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <div class="backdrop" role="presentation" onclick={onClose}>
-  <div class="sheet" role="dialog" aria-modal="true" aria-label="Ajouter un jeu Switch" tabindex="-1" onclick={(event) => event.stopPropagation()} onkeydown={() => {}}>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label={t.switchPicker.title} tabindex="-1" onclick={(event) => event.stopPropagation()} onkeydown={() => {}}>
     <div class="heading">
-      <h2>Ajouter un jeu Switch</h2>
-      <button class="button primary" onclick={onClose}>Terminé</button>
+      <h2>{t.switchPicker.title}</h2>
+      <button class="button primary" onclick={onClose}>{t.switchPicker.done}</button>
     </div>
-    <p class="secondary">
-      La Switch n'a pas de système de succès. Chaque jeu reçoit donc une liste de trophées sur le modèle PS5 : cochez-les au fil de votre
-      progression, le platine s'obtient automatiquement.
-    </p>
+    <p class="secondary">{t.switchPicker.intro}</p>
 
-    <SearchField placeholder="Rechercher dans le catalogue" bind:value={search} />
+    <SearchField placeholder={t.switchPicker.search} bind:value={search} />
 
     <div class="entries">
       {#each visibleEntries as item (item.id)}
@@ -64,12 +63,12 @@
             <span class="title">{item.title}</span>
             <TierCounts counts={item.trophyCounts.map(({ tier, count }) => ({ tier, text: String(count) }))} size={11} />
           </div>
-          <button class="button" disabled={item.isAdded} onclick={() => api.addSwitchGame(item.id)}>{item.isAdded ? 'Ajouté' : 'Ajouter'}</button>
+          <button class="button" disabled={item.isAdded} onclick={() => api.addSwitchGame(item.id)}>{item.isAdded ? t.switchPicker.added : t.switchPicker.add}</button>
         </div>
       {/each}
     </div>
 
-    <h3>Jeu absent du catalogue</h3>
+    <h3>{t.switchPicker.customTitle}</h3>
     <form
       class="custom"
       onsubmit={(event) => {
@@ -77,10 +76,10 @@
         addCustomGame();
       }}
     >
-      <input class="text-input" placeholder="Titre du jeu" bind:value={customTitle} />
-      <button class="button" type="submit" disabled={!customTitle.trim()}>Ajouter</button>
+      <input class="text-input" placeholder={t.switchPicker.customPlaceholder} bind:value={customTitle} />
+      <button class="button" type="submit" disabled={!customTitle.trim()}>{t.switchPicker.add}</button>
     </form>
-    <p class="secondary small">Il recevra une liste générique : premiers pas, boss, fin de l'histoire, 100 %, difficulté maximale…</p>
+    <p class="secondary small">{t.switchPicker.customHint}</p>
   </div>
 </div>
 

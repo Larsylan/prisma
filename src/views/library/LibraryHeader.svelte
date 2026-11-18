@@ -7,6 +7,7 @@
   import { api } from '../../lib/api';
   import { tierGradient } from '../../lib/colors';
   import { formatNumber, percent } from '../../lib/format';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { Profile, SyncStatus } from '../../lib/types';
 
   let {
@@ -16,27 +17,27 @@
     onOpenSettings,
   }: { profile: Profile; status: SyncStatus | null; onAddSwitchGame: () => void; onOpenSettings: () => void } = $props();
 
-  let isSyncing = $derived(Boolean(status?.syncing || status?.steamWebImporting));
+  let isSyncing = $derived(Boolean(status?.syncing || status?.steamWeb.state === 'importing'));
 </script>
 
 <header data-tauri-drag-region>
   <LevelBadge level={profile.level} progress={profile.levelProgress} tier={profile.levelTier} />
   <div class="identity" data-tauri-drag-region>
     <h1>{profile.name}</h1>
-    <span class="secondary level">Niveau de trophée {profile.level}</span>
+    <span class="secondary level">{t.library.trophyLevel(profile.level)}</span>
     <div class="level-progress"><ProgressBar value={profile.levelProgress} colors={tierGradient(profile.levelTier)} /></div>
     <span class="secondary small">
-      {percent(profile.levelProgress)} % · niveau {profile.nextLevel} · {formatNumber(profile.points)} points
+      {t.library.levelProgress(percent(profile.levelProgress), profile.nextLevel, formatNumber(profile.points))}
     </span>
   </div>
   <div class="totals" data-tauri-drag-region>
-    <span class="secondary">{formatNumber(profile.earnedTotal)} trophées</span>
+    <span class="secondary">{t.library.trophyTotal(formatNumber(profile.earnedTotal))}</span>
     <TierCounts counts={profile.earnedByTier.map(({ tier, count }) => ({ tier, text: formatNumber(count) }))} size={18} />
   </div>
   <div class="actions">
-    <IconButton help="Ajouter un jeu Switch" onclick={onAddSwitchGame}><Icon name="plus" /></IconButton>
-    <IconButton help="Synchroniser" spinning={isSyncing} onclick={() => api.syncAll()}><Icon name="sync" /></IconButton>
-    <IconButton help="Réglages" onclick={onOpenSettings}><Icon name="gear" /></IconButton>
+    <IconButton help={t.library.addSwitchGame} onclick={onAddSwitchGame}><Icon name="plus" /></IconButton>
+    <IconButton help={t.library.sync} spinning={isSyncing} onclick={() => api.syncAll()}><Icon name="sync" /></IconButton>
+    <IconButton help={t.library.settings} onclick={onOpenSettings}><Icon name="gear" /></IconButton>
   </div>
 </header>
 

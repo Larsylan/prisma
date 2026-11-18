@@ -12,6 +12,7 @@ import type {
   GameDetail,
   GameSummary,
   LibraryOverview,
+  Locale,
   Platform,
   Settings,
   SyncStatus,
@@ -23,22 +24,53 @@ import type {
   TrophyView,
 } from './types';
 
-const NAMES = [
-  ['Premier pas', 'Terminer le prologue.'],
-  ['Éclaireur', 'Découvrir toutes les régions.'],
-  ['Collectionneur', 'Réunir 50 objets rares.'],
-  ['Sans une égratignure', 'Vaincre un boss sans subir de dégâts.'],
-  ['Maître artisan', 'Fabriquer un objet légendaire.'],
-  ['Explorateur aguerri', 'Parcourir 100 km.'],
-  ['Duel au sommet', 'Remporter un duel classé.'],
-  ['Trésor oublié', 'Ouvrir le coffre caché.'],
-  ['Course contre la montre', 'Finir une course en moins de 2 minutes.'],
-  ['Ami des bêtes', 'Apprivoiser une créature.'],
-  ['Cartographe', 'Compléter la carte.'],
-  ['Le grand saut', 'Sauter depuis le plus haut sommet.'],
-  ['Lumière retrouvée', 'Rallumer tous les phares.'],
-  ['Fin du voyage', "Terminer l'histoire."],
-];
+const parameters = new URLSearchParams(location.search);
+
+/** `?lang=en` ou `?lang=fr` ; à défaut, la langue du navigateur. */
+const LOCALE: Locale = (() => {
+  const requested = parameters.get('lang');
+  if (requested === 'fr' || requested === 'en') return requested;
+  return navigator.language.startsWith('fr') ? 'fr' : 'en';
+})();
+
+const NAMES: Record<Locale, [string, string][]> = {
+  fr: [
+    ['Premier pas', 'Terminer le prologue.'],
+    ['Éclaireur', 'Découvrir toutes les régions.'],
+    ['Collectionneur', 'Réunir 50 objets rares.'],
+    ['Sans une égratignure', 'Vaincre un boss sans subir de dégâts.'],
+    ['Maître artisan', 'Fabriquer un objet légendaire.'],
+    ['Explorateur aguerri', 'Parcourir 100 km.'],
+    ['Duel au sommet', 'Remporter un duel classé.'],
+    ['Trésor oublié', 'Ouvrir le coffre caché.'],
+    ['Course contre la montre', 'Finir une course en moins de 2 minutes.'],
+    ['Ami des bêtes', 'Apprivoiser une créature.'],
+    ['Cartographe', 'Compléter la carte.'],
+    ['Le grand saut', 'Sauter depuis le plus haut sommet.'],
+    ['Lumière retrouvée', 'Rallumer tous les phares.'],
+    ['Fin du voyage', "Terminer l'histoire."],
+  ],
+  en: [
+    ['First Steps', 'Finish the prologue.'],
+    ['Scout', 'Discover every region.'],
+    ['Collector', 'Gather 50 rare items.'],
+    ['Not a Scratch', 'Defeat a boss without taking damage.'],
+    ['Master Crafter', 'Craft a legendary item.'],
+    ['Seasoned Explorer', 'Travel 100 km.'],
+    ['Duel at the Top', 'Win a ranked duel.'],
+    ['Forgotten Treasure', 'Open the hidden chest.'],
+    ['Against the Clock', 'Finish a race in under 2 minutes.'],
+    ['Animal Friend', 'Tame a creature.'],
+    ['Cartographer', 'Complete the map.'],
+    ['The Big Leap', 'Jump from the highest peak.'],
+    ['Light Restored', 'Relight every lighthouse.'],
+    ["Journey's End", 'Finish the story.'],
+  ],
+};
+const PLAYSTATION_PLATINUM: Record<Locale, [string, string]> = {
+  fr: ['Légende vivante', 'Obtenir tous les autres trophées.'],
+  en: ['Living Legend', 'Earn every other trophy.'],
+};
 const DAY = 86_400_000;
 const POINTS: Record<TrophyTier, number> = { bronze: 15, silver: 30, gold: 90, platinum: 300 };
 
@@ -72,7 +104,7 @@ function trophies(game: DemoGame): TrophyView[] {
   const regular = Array.from({ length: game.trophyCount }, (_, index): TrophyView => {
     const tier: TrophyTier = index >= game.trophyCount - 2 ? 'gold' : index >= game.trophyCount - 4 ? 'silver' : 'bronze';
     const isEarned = index < earnedCount;
-    const [name, detail] = NAMES[index % NAMES.length];
+    const [name, detail] = NAMES[LOCALE][index % NAMES[LOCALE].length];
     return {
       id: `${game.id}#${index}`,
       reference: { gameId: game.id, trophyId: String(index) },
@@ -80,6 +112,7 @@ function trophies(game: DemoGame): TrophyView[] {
       detail,
       tier,
       isHidden: !isEarned && index === game.trophyCount - 1,
+      isGeneratedPlatinum: false,
       iconUrl: null,
       isEarned,
       earnedAt: isEarned ? new Date(now - (game.daysAgo + (earnedCount - index) * 1.7) * DAY).toISOString() : null,
@@ -94,8 +127,9 @@ function trophies(game: DemoGame): TrophyView[] {
   const platinum: TrophyView = {
     ...regular[0],
     id: `${game.id}#platinum`,
-    name: game.platform === 'playstation' ? 'Légende vivante' : game.title,
-    detail: `Obtenir tous les trophées de ${game.title}.`,
+    name: game.platform === 'playstation' ? PLAYSTATION_PLATINUM[LOCALE][0] : game.title,
+    detail: game.platform === 'playstation' ? PLAYSTATION_PLATINUM[LOCALE][1] : '',
+    isGeneratedPlatinum: game.platform !== 'playstation',
     tier: 'platinum',
     isEarned: isComplete,
     earnedAt: isComplete ? new Date(now - game.daysAgo * DAY).toISOString() : null,
@@ -158,12 +192,14 @@ const overview: LibraryOverview = {
   games: details,
 };
 
+const syncedAt = new Date(now);
+syncedAt.setHours(14, 5, 0, 0);
+
 const status: SyncStatus = {
-  steamLocal: '3 jeu(x) Steam détecté(s) en local · Alex',
+  steamLocal: { state: 'detected', gameCount: 3, player: 'Alex' },
   steamWatching: true,
-  steamWeb: '',
-  steamWebImporting: false,
-  playstation: 'PlayStation synchronisé · 6 jeux · 14:05',
+  steamWeb: { state: 'idle' },
+  playstation: { state: 'synced', gameCount: 6, at: syncedAt.toISOString() },
   playstationConnected: true,
   syncing: false,
 };
@@ -178,6 +214,7 @@ const settings: Settings = {
   toastDurationSeconds: 6,
   toastPosition: 'topRight',
   theme: 'night',
+  language: LOCALE === 'fr' ? 'french' : 'english',
 };
 
 const system: SystemInfo = { dataDirectory: '~/Library/Application Support/Prisma', detectedSteamId64: '76561197972611406', launchAtLogin: true };
@@ -195,7 +232,7 @@ const catalog: CatalogItem[] = ['Aurora Quest', 'Moss Kingdom', 'Tiny Isles'].ma
 }));
 
 const demoAnnouncement: Announcement = {
-  trophyName: 'Lumière retrouvée',
+  trophyName: NAMES[LOCALE][12][0],
   tier: 'gold',
   iconUrl: null,
   gameTitle: 'Lumen Odyssey',
@@ -203,11 +240,11 @@ const demoAnnouncement: Announcement = {
 };
 
 /** Généré à partir du cœur Rust : `cargo run -p prisma-core --example themes > src/lib/demo-themes.json`. */
-const gallery = demoThemes as ThemeOption[];
+const gallery = demoThemes as unknown as ThemeOption[];
 
 /** `?theme=ocean` applique un thème dans le mode démo, pour les captures. */
 function demoPalette(): ThemePalette {
-  const preset = new URLSearchParams(location.search).get('theme');
+  const preset = parameters.get('theme');
   return (gallery.find((option) => option.preset === preset) ?? gallery[0]).palette;
 }
 
@@ -237,6 +274,7 @@ export const demoApi: Api = {
   setLaunchAtLogin: nothing,
   themeGallery: async () => gallery,
   activeTheme: async () => demoPalette(),
+  locale: async () => LOCALE,
 };
 
 const unlisten: UnlistenFn = () => {};
@@ -251,4 +289,5 @@ export const demoEvents: Events = {
   },
   onToastHide: async () => unlisten,
   onThemeChanged: async () => unlisten,
+  onLanguageChanged: async () => unlisten,
 };

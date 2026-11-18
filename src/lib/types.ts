@@ -5,6 +5,9 @@ export type TrophyTier = 'bronze' | 'silver' | 'gold' | 'platinum';
 export type GroupingMode = 'all' | 'playstation' | 'none';
 export type ToastPosition = 'topRight' | 'topLeft';
 export type Appearance = 'dark' | 'light';
+export type Language = 'system' | 'french' | 'english';
+/** Langue effectivement affichée. */
+export type Locale = 'fr' | 'en';
 export type Preset =
   | 'night'
   | 'indigo'
@@ -40,7 +43,6 @@ export interface ThemePalette {
 
 export interface ThemeOption {
   preset: Preset;
-  name: string;
   palette: ThemePalette;
 }
 
@@ -99,6 +101,8 @@ export interface TrophyView {
   detail: string;
   tier: TrophyTier;
   isHidden: boolean;
+  /** Platine ajouté par Prisma aux jeux Steam et Switch. */
+  isGeneratedPlatinum: boolean;
   iconUrl: string | null;
   isEarned: boolean;
   earnedAt: string | null;
@@ -120,12 +124,34 @@ export interface CatalogItem {
   isAdded: boolean;
 }
 
+export type Failure =
+  | { reason: 'invalidToken' }
+  | { reason: 'notConnected' }
+  | { reason: 'http'; service: string; status: number }
+  | { reason: 'network'; service: string; detail: string };
+
+export type SteamLocalState = { state: 'unknown' } | { state: 'notInstalled' } | { state: 'detected'; gameCount: number; player: string | null };
+
+export type SteamWebState =
+  | { state: 'idle' }
+  | { state: 'importing'; analyzed: number; total: number }
+  | { state: 'imported'; gameCount: number }
+  | { state: 'failed'; failure: Failure };
+
+export type PlayStationState =
+  | { state: 'disconnected' }
+  | { state: 'connecting' }
+  | { state: 'connected' }
+  | { state: 'syncing' }
+  | { state: 'updating'; updated: number; total: number }
+  | { state: 'synced'; gameCount: number; at: string }
+  | { state: 'failed'; failure: Failure };
+
 export interface SyncStatus {
-  steamLocal: string;
+  steamLocal: SteamLocalState;
   steamWatching: boolean;
-  steamWeb: string;
-  steamWebImporting: boolean;
-  playstation: string;
+  steamWeb: SteamWebState;
+  playstation: PlayStationState;
   playstationConnected: boolean;
   syncing: boolean;
 }
@@ -140,6 +166,7 @@ export interface Settings {
   toastDurationSeconds: number;
   toastPosition: ToastPosition;
   theme: Preset;
+  language: Language;
 }
 
 export interface SystemInfo {

@@ -5,7 +5,7 @@
 ![macOS | Windows | Linux](https://img.shields.io/badge/platforms-macOS%20%7C%20Windows%20%7C%20Linux-informational)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-*[Version française](README.fr.md) — the app interface is in French.*
+*[Version française](README.fr.md) — the app is available in English and French.*
 
 **Prisma** is a free, open-source **trophy and achievement tracker** for **macOS, Windows and Linux**. It brings your **PlayStation (PSN) trophies**, **Steam achievements** and **Nintendo Switch games** together in a single console-style collection:
 - 4 tiers: bronze, silver, gold and platinum;
@@ -13,6 +13,8 @@
 - an **instant trophy notification on top of your game** as soon as a Steam achievement unlocks.
 
 Everything runs on your computer. No server, no account to create, no leaderboards, no online statistics.
+
+![A Steam achievement unlocks in a game: the Prisma trophy card slides in on top, then the platinum, then the updated library](docs/demo.gif)
 
 ![Prisma library: PlayStation, Steam and Switch games with their trophy progress](docs/screenshots/library.png)
 
@@ -40,6 +42,7 @@ Get the installer for your system from the **[latest release](https://github.com
 - **Notification card** shown above games without stealing keyboard or mouse focus, with a **crystal chime**.
 - **Themes**: eighteen color themes, including glowing neons, a light theme and a spectral black, each previewed before being applied.
 - **Original identity**: the hexagonal crystal emblem and the chime are created by the app itself.
+- **English and French** interface, following your system language or chosen in the settings.
 - Lives in the **menu bar** (macOS) or **system tray** (Windows, Linux), even with the window closed, and can start at login.
 
 ## Supported systems
@@ -161,7 +164,7 @@ SteamWebImporter ─────────────────────
 ```sh
 npm ci                                  # interface dependencies
 npm run tauri dev                       # full app, reloaded on every change
-npm run demo                            # interface alone in a browser, on a fictional library
+npm run demo                            # interface alone in a browser, on a fictional library (?lang=en|fr)
 npm run check                           # TypeScript and Svelte checks
 npm test                                # interface tests (Vitest)
 cargo test --workspace                  # core and app tests
@@ -188,6 +191,7 @@ Besides the tests, CI builds the installers for each system, installs them and r
 - Real-time detection only works for games using Steam achievements.
 - PlayStation trophies come from Sony's servers and are checked every 90 s.
 - Switch trophies are ticked by hand, and Steam tiers are an estimate.
+- The Switch trophy catalog is written in French only for now ([help welcome](https://github.com/Larsylan/prisma/issues/1)).
 - **Windows**: the notification shows above borderless or windowed full-screen games, not exclusive full-screen ones.
 - **Linux**: on Wayland the desktop decides window placement, and GNOME does not let an app appear above a full-screen game. Notifications work fully on X11 and KDE Plasma.
 

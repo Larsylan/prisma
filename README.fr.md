@@ -5,7 +5,7 @@
 ![macOS | Windows | Linux](https://img.shields.io/badge/syst%C3%A8mes-macOS%20%7C%20Windows%20%7C%20Linux-informational)
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 
-*[English version](README.md)*
+*[English version](README.md) — l'app est disponible en français et en anglais.*
 
 **Prisma** est un système de **trophées et de succès** gratuit et open source pour **macOS, Windows et Linux**. Il réunit vos **trophées PlayStation (PSN)**, vos **succès Steam** et vos **jeux Nintendo Switch** dans une seule collection, façon console :
 - 4 grades : bronze, argent, or et platine ;
@@ -14,11 +14,13 @@
 
 Tout est calculé sur votre ordinateur. Il n'y a ni serveur, ni compte à créer, ni classement, ni statistique en ligne.
 
-![Bibliothèque de Prisma : jeux PlayStation, Steam et Switch avec leur progression](docs/screenshots/library.png)
+![Un succès Steam se débloque en jeu : la carte de trophée Prisma apparaît par-dessus, puis le platine, puis la bibliothèque à jour](docs/demo.gif)
+
+![Bibliothèque de Prisma : jeux PlayStation, Steam et Switch avec leur progression](docs/screenshots/fr/library.png)
 
 | Fiche d'un jeu | Notification de trophée |
 |---|---|
-| ![Liste des trophées d'un jeu, avec les grades bronze, argent, or et platine](docs/screenshots/detail.png) | ![Notification « Vous avez obtenu un trophée » affichée par-dessus un jeu](docs/screenshots/toast.png) |
+| ![Liste des trophées d'un jeu, avec les grades bronze, argent, or et platine](docs/screenshots/fr/detail.png) | ![Notification « Vous avez obtenu un trophée » affichée par-dessus un jeu](docs/screenshots/fr/toast.png) |
 
 ## Téléchargement
 
@@ -67,6 +69,7 @@ Téléchargez l'installateur de votre système dans la **[dernière version](htt
 - **Uniformisation** : Steam n'a pas de grades. Ils sont attribués automatiquement et restent modifiables à la main. Chaque jeu Steam reçoit aussi un **platine**.
 - **Carte de notification** affichée au-dessus des jeux, sans prendre le focus du clavier ni de la souris, accompagnée d'un **carillon cristallin**.
 - **Thèmes** : dix-huit thèmes de couleur, dont des néons lumineux, un thème clair et un noir spectral, chacun prévisualisé avant d'être appliqué.
+- **Interface en français et en anglais**, selon la langue du système ou au choix dans les réglages.
 - **Identité originale** : l'emblème est un cristal hexagonal à facettes et le son est synthétisé par l'app. Aucun visuel ni son ne provient d'une autre marque.
 - L'app tourne **dans la barre des menus** (macOS) ou **la zone de notification** (Windows, Linux), même fenêtre fermée. Elle peut se lancer à l'ouverture de session.
 
@@ -200,7 +203,7 @@ La carte s'affiche en haut de l'écran où se trouve le pointeur. Elle ne capte 
 
 Réglages → **Apparence** présente dix-huit thèmes de couleur, chacun sous forme de miniature de l'écran principal. Un clic l'applique aussitôt, à la fenêtre comme à la carte de notification.
 
-![Thèmes](docs/screenshots/themes.png)
+![Thèmes](docs/screenshots/fr/themes.png)
 
 | Famille | Thèmes |
 |---|---|
@@ -424,6 +427,7 @@ Le journal de l'app (voir [Données](#données-et-confidentialité)) indique cha
 - **PlayStation n'est pas instantané** : les trophées viennent des serveurs de Sony et sont vérifiés toutes les 90 s.
 - L'accès PSN utilise l'**API non officielle** de l'application mobile PlayStation. Sony peut la modifier à tout moment.
 - **Switch n'est pas détecté automatiquement** : les trophées se cochent à la main.
+- Le catalogue des trophées Switch n'existe pour l'instant qu'en français ([aide bienvenue](https://github.com/Larsylan/prisma/issues/1)).
 - Les grades Steam sont une **estimation** : ajustez-les par clic droit si besoin.
 - Les jeux Steam dont la liste de succès n'est pas présente en local ne sont visibles qu'avec la Steam Web API.
 - **Windows** : la notification passe au-dessus des jeux en plein écran fenêtré ou sans bordure, mais pas d'un jeu en plein écran exclusif.
@@ -434,7 +438,7 @@ Le journal de l'app (voir [Données](#données-et-confidentialité)) indique cha
 ```sh
 npm ci                                  # dépendances de l'interface
 npm run tauri dev                       # app complète, rechargée à chaque modification
-npm run demo                            # interface seule dans un navigateur, sur une bibliothèque fictive
+npm run demo                            # interface seule dans un navigateur, sur une bibliothèque fictive (?lang=fr|en)
 npm run check                           # vérification TypeScript et Svelte
 npm test                                # tests de l'interface (Vitest)
 cargo test --workspace                  # tests du cœur et de l'app
@@ -442,7 +446,7 @@ cargo clippy --workspace --all-targets  # analyse du code Rust
 cargo fmt --all                         # formatage du code Rust
 ```
 
-Le mode démo accepte `?view=game&id=group:lumen` ou `?view=settings` pour ouvrir directement un écran : c'est ainsi que sont produites les captures de ce README.
+Le mode démo accepte `?view=game&id=group:lumen` ou `?view=settings` pour ouvrir directement un écran, et `?lang=fr` ou `?lang=en` pour la langue : c'est ainsi que sont produites les captures de ce README. La démo animée s'enregistre avec `./scripts/demo/record.sh` (Docker requis), qui filme la vraie app sur un faux client Steam dans un Linux virtuel.
 
 Deux variables d'environnement isolent les essais de vos vraies données :
 

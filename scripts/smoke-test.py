@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Le premier lancement d'un exécutable fraîchement installé peut être long, le temps que l'antivirus l'examine.
 STARTUP_TIMEOUT = 120
-UNLOCKED_TROPHY = "Fond de l'océan"
+UNLOCKED_TROPHY = "Ocean Floor"
 FIXTURE_GAMES = 3
 
 

@@ -6,6 +6,7 @@ pub const NAVIGATE: &str = "navigate";
 pub const TOAST_SHOW: &str = "toast-show";
 pub const TOAST_HIDE: &str = "toast-hide";
 pub const THEME_CHANGED: &str = "theme-changed";
+pub const LANGUAGE_CHANGED: &str = "language-changed";
 
 use prisma_core::domain::Trophy;
 use tauri::{AppHandle, Emitter};

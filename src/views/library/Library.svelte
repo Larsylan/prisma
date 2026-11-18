@@ -2,8 +2,10 @@
   import Crystal from '../../components/Crystal.svelte';
   import PillPicker from '../../components/PillPicker.svelte';
   import SearchField from '../../components/SearchField.svelte';
-  import { platformLabels } from '../../lib/format';
+  import { compareTitles, matchesSearch } from '../../lib/format';
+  import { t } from '../../lib/i18n/index.svelte';
   import { appState } from '../../lib/state.svelte';
+  import { playstationText, steamLocalText } from '../../lib/status';
   import type { GameSummary, LibraryOverview, Platform } from '../../lib/types';
   import GameCard from './GameCard.svelte';
   import LibraryHeader from './LibraryHeader.svelte';
@@ -15,22 +17,25 @@
     onOpenSettings,
   }: { overview: LibraryOverview; onSelectGame: (id: string) => void; onAddSwitchGame: () => void; onOpenSettings: () => void } = $props();
 
-  type Sort = 'recent' | 'progress' | 'alphabetical';
-  const SORT_LABELS: Record<Sort, string> = { recent: 'Derniers obtenus', progress: 'Progression', alphabetical: 'Alphabétique' };
-  const PLATFORM_OPTIONS = [
-    { value: null, label: 'Tous' },
-    ...(Object.keys(platformLabels) as Platform[]).map((platform) => ({ value: platform, label: platformLabels[platform] })),
-  ];
+  type Sort = keyof typeof t.library.sorts;
+  const PLATFORMS: Platform[] = ['playstation', 'steam', 'nintendo'];
+
+  let platformOptions = $derived([
+    { value: null, label: t.all },
+    ...PLATFORMS.map((platform) => ({ value: platform, label: t.platforms[platform] })),
+  ]);
 
   let platform = $state<Platform | null>(null);
   let sort = $state<Sort>('recent');
   let search = $state('');
 
   let visibleGames = $derived(sorted(overview.games.filter(isVisible)));
+  let steamLocal = $derived(appState.status ? steamLocalText(appState.status.steamLocal) : '');
+  let playstation = $derived(appState.status ? playstationText(appState.status.playstation) : '');
 
   function isVisible(game: GameSummary): boolean {
     const isOnPlatform = platform === null || game.platforms.includes(platform);
-    return isOnPlatform && game.title.toLocaleLowerCase('fr').includes(search.trim().toLocaleLowerCase('fr'));
+    return isOnPlatform && matchesSearch(game.title, search);
   }
 
   /** Les jeux arrivent déjà triés par date d'obtention. */
@@ -41,7 +46,7 @@
       case 'progress':
         return [...games].sort((lhs, rhs) => rhs.progress - lhs.progress);
       case 'alphabetical':
-        return [...games].sort((lhs, rhs) => lhs.title.localeCompare(rhs.title, 'fr'));
+        return [...games].sort((lhs, rhs) => compareTitles(lhs.title, rhs.title));
     }
   }
 </script>
@@ -50,11 +55,11 @@
   <LibraryHeader profile={overview.profile} status={appState.status} {onAddSwitchGame} {onOpenSettings} />
 
   <div class="controls">
-    <PillPicker options={PLATFORM_OPTIONS} bind:value={platform} />
+    <PillPicker options={platformOptions} bind:value={platform} />
     <div class="spacer"></div>
-    <div class="search"><SearchField placeholder="Rechercher un jeu" bind:value={search} /></div>
-    <select class="select" bind:value={sort} aria-label="Tri">
-      {#each Object.entries(SORT_LABELS) as [value, label] (value)}
+    <div class="search"><SearchField placeholder={t.library.search} bind:value={search} /></div>
+    <select class="select" bind:value={sort} aria-label={t.sortBy}>
+      {#each Object.entries(t.library.sorts) as [value, label] (value)}
         <option {value}>{label}</option>
       {/each}
     </select>
@@ -70,24 +75,24 @@
     <div class="empty">
       <Crystal tier="platinum" size={54} />
       {#if overview.games.length === 0}
-        <h2>Aucun trophée pour le moment</h2>
-        <p class="secondary">Connectez votre compte PlayStation et/ou Steam dans les réglages, ou ajoutez vos jeux Switch.</p>
+        <h2>{t.library.emptyTitle}</h2>
+        <p class="secondary">{t.library.emptyHint}</p>
         <div class="empty-actions">
-          <button class="button primary" onclick={onOpenSettings}>Ouvrir les réglages</button>
-          <button class="button" onclick={onAddSwitchGame}>Ajouter un jeu Switch</button>
+          <button class="button primary" onclick={onOpenSettings}>{t.library.openSettings}</button>
+          <button class="button" onclick={onAddSwitchGame}>{t.library.addSwitchGame}</button>
         </div>
       {:else}
-        <h2>Aucun jeu ne correspond</h2>
+        <h2>{t.library.noMatch}</h2>
       {/if}
     </div>
   {/if}
 
   <footer>
     <span class="dot" class:active={appState.status?.steamWatching}></span>
-    <span>{appState.status?.steamWatching ? 'Surveillance Steam en temps réel active' : 'Surveillance Steam inactive'}</span>
-    {#if appState.status?.steamLocal}<span>· {appState.status.steamLocal}</span>{/if}
+    <span>{appState.status?.steamWatching ? t.library.steamWatching : t.library.steamNotWatching}</span>
+    {#if steamLocal}<span>· {steamLocal}</span>{/if}
     <span class="spacer"></span>
-    {#if appState.status?.playstation}<span>{appState.status.playstation}</span>{/if}
+    {#if playstation}<span>{playstation}</span>{/if}
   </footer>
 </div>
 

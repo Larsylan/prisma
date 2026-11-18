@@ -3,6 +3,7 @@
 
   import ThemePreview from '../../components/ThemePreview.svelte';
   import { api } from '../../lib/api';
+  import { t } from '../../lib/i18n/index.svelte';
   import type { Preset, ThemeOption } from '../../lib/types';
   import Section from './Section.svelte';
 
@@ -20,12 +21,12 @@
   }
 </script>
 
-<Section title="Apparence">
+<Section title={t.settings.appearance}>
   <div class="grid">
     {#each options as option (option.preset)}
       <button class="theme" class:selected={option.preset === theme} aria-pressed={option.preset === theme} onclick={() => select(option.preset)}>
         <ThemePreview palette={option.palette} />
-        <span class="name">{option.name}</span>
+        <span class="name">{t.settings.themes[option.preset]}</span>
       </button>
     {/each}
   </div>

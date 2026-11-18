@@ -1,6 +1,5 @@
 [
   {
-    "name": "Nuit",
     "palette": {
       "accent": "#2d6bf6",
       "appearance": "dark",
@@ -19,7 +18,6 @@
     "preset": "night"
   },
   {
-    "name": "Indigo",
     "palette": {
       "accent": "#6366f1",
       "appearance": "dark",
@@ -38,7 +36,6 @@
     "preset": "indigo"
   },
   {
-    "name": "Améthyste",
     "palette": {
       "accent": "#9b5cf6",
       "appearance": "dark",
@@ -57,7 +54,6 @@
     "preset": "amethyst"
   },
   {
-    "name": "Sakura",
     "palette": {
       "accent": "#ec5fa6",
       "appearance": "dark",
@@ -76,7 +72,6 @@
     "preset": "sakura"
   },
   {
-    "name": "Rubis",
     "palette": {
       "accent": "#e5394f",
       "appearance": "dark",
@@ -95,7 +90,6 @@
     "preset": "ruby"
   },
   {
-    "name": "Braise",
     "palette": {
       "accent": "#f06a2c",
       "appearance": "dark",
@@ -114,7 +108,6 @@
     "preset": "ember"
   },
   {
-    "name": "Ambre",
     "palette": {
       "accent": "#e0a91c",
       "appearance": "dark",
@@ -133,7 +126,6 @@
     "preset": "amber"
   },
   {
-    "name": "Émeraude",
     "palette": {
       "accent": "#22b07a",
       "appearance": "dark",
@@ -152,7 +144,6 @@
     "preset": "emerald"
   },
   {
-    "name": "Océan",
     "palette": {
       "accent": "#14b8c4",
       "appearance": "dark",
@@ -171,7 +162,6 @@
     "preset": "ocean"
   },
   {
-    "name": "Aurore",
     "palette": {
       "accent": "#ec5fa6",
       "appearance": "dark",
@@ -190,7 +180,6 @@
     "preset": "aurora"
   },
   {
-    "name": "Crépuscule",
     "palette": {
       "accent": "#ff8a4c",
       "appearance": "dark",
@@ -209,7 +198,6 @@
     "preset": "twilight"
   },
   {
-    "name": "Graphite",
     "palette": {
       "accent": "#9aa7bd",
       "appearance": "dark",
@@ -228,7 +216,6 @@
     "preset": "graphite"
   },
   {
-    "name": "Néon cyan",
     "palette": {
       "accent": "#00e5ff",
       "appearance": "dark",
@@ -247,7 +234,6 @@
     "preset": "neonCyan"
   },
   {
-    "name": "Néon magenta",
     "palette": {
       "accent": "#ff2bd6",
       "appearance": "dark",
@@ -266,7 +252,6 @@
     "preset": "neonMagenta"
   },
   {
-    "name": "Néon acide",
     "palette": {
       "accent": "#9dff00",
       "appearance": "dark",
@@ -285,7 +270,6 @@
     "preset": "neonAcid"
   },
   {
-    "name": "Synthwave",
     "palette": {
       "accent": "#ff2e88",
       "appearance": "dark",
@@ -307,7 +291,6 @@
     "preset": "synthwave"
   },
   {
-    "name": "Blanc néon",
     "palette": {
       "accent": "#d6119a",
       "appearance": "light",
@@ -327,7 +310,6 @@
     "preset": "whiteNeon"
   },
   {
-    "name": "Noir spectral",
     "palette": {
       "accent": "#8f7bff",
       "appearance": "dark",
