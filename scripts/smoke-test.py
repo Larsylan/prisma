@@ -67,9 +67,12 @@ def wait_for_library(process: subprocess.Popen, library: Path) -> bool:
 def exercise(fixture: Path, steam: Path, output: Path) -> None:
     capture(output / "1-bibliotheque.png")
     subprocess.run([fixture, steam, "unlock"], check=True)
+    # Le succès s'affiche d'abord, puis le platine qu'il complète, une fois la première carte refermée.
     time.sleep(3)
-    capture(output / "2-notification.png")
+    capture(output / "2-notification-succes.png")
     time.sleep(6)
+    capture(output / "3-notification-platine.png")
+    time.sleep(3)
 
 
 def stored_games(library: Path) -> int:

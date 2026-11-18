@@ -2,8 +2,7 @@
   import { onMount } from 'svelte';
 
   import Crystal from './components/Crystal.svelte';
-  import { events } from './lib/api';
-  import { api } from './lib/api';
+  import { api, events } from './lib/api';
   import { tierGradient } from './lib/colors';
   import { applyPalette } from './lib/palette';
   import type { Announcement } from './lib/types';
