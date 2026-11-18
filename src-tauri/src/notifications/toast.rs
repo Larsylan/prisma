@@ -56,48 +56,52 @@ impl ToastWindow {
 
     pub async fn present(&self, announcement: &Announcement, duration: Duration, position: ToastPosition) {
         let Some(window) = self.app.get_webview_window(LABEL) else { return };
-        if let Err(error) = self.place(&window, position) {
-            log::warn!("Placement de la notification impossible : {error}");
-        }
         let payload = ToastPayload { announcement, slides_from_left: position == ToastPosition::TopLeft };
         if let Err(error) = window.emit(events::TOAST_SHOW, payload) {
             log::error!("Notification impossible : {error}");
             return;
         }
-        platform::show(&self.app, &window);
+        let (app, shown) = (self.app.clone(), window.clone());
+        // Écrans, pointeur et fenêtre ne se manipulent que depuis le fil principal : sous Linux, Xlib s'interrompt sinon.
+        let _ = self.app.run_on_main_thread(move || {
+            if let Err(error) = place(&app, &shown, position) {
+                log::warn!("Placement de la notification impossible : {error}");
+            }
+            platform::show(&shown);
+        });
         tokio::time::sleep(duration).await;
         let _ = window.emit(events::TOAST_HIDE, ());
         tokio::time::sleep(FADE_OUT).await;
         let _ = window.hide();
     }
+}
 
-    /// En haut de l'écran où se trouve le pointeur.
-    fn place(&self, window: &WebviewWindow, position: ToastPosition) -> tauri::Result<()> {
-        let pointer = self.app.cursor_position()?;
-        let monitor = match self.app.monitor_from_point(pointer.x, pointer.y)? {
+/// En haut de l'écran où se trouve le pointeur.
+fn place(app: &AppHandle, window: &WebviewWindow, position: ToastPosition) -> tauri::Result<()> {
+    let pointer = app.cursor_position()?;
+    let monitor = match app.monitor_from_point(pointer.x, pointer.y)? {
+        Some(monitor) => monitor,
+        None => match app.primary_monitor()? {
             Some(monitor) => monitor,
-            None => match self.app.primary_monitor()? {
-                Some(monitor) => monitor,
-                None => return Ok(()),
-            },
-        };
-        let scale = monitor.scale_factor();
-        let area = monitor.work_area();
-        let margin = (SCREEN_MARGIN * scale) as i32;
-        let width = (WIDTH * scale) as i32;
-        let x = match position {
-            ToastPosition::TopLeft => area.position.x + margin,
-            ToastPosition::TopRight => area.position.x + area.size.width as i32 - width - margin,
-        };
-        window.set_position(PhysicalPosition::new(x, area.position.y + margin))
-    }
+            None => return Ok(()),
+        },
+    };
+    let scale = monitor.scale_factor();
+    let area = monitor.work_area();
+    let margin = (SCREEN_MARGIN * scale) as i32;
+    let width = (WIDTH * scale) as i32;
+    let x = match position {
+        ToastPosition::TopLeft => area.position.x + margin,
+        ToastPosition::TopRight => area.position.x + area.size.width as i32 - width - margin,
+    };
+    window.set_position(PhysicalPosition::new(x, area.position.y + margin))
 }
 
 #[cfg(target_os = "macos")]
 mod platform {
     use objc2_app_kit::{NSWindow, NSWindowCollectionBehavior};
     use objc2_core_graphics::CGShieldingWindowLevel;
-    use tauri::{AppHandle, WebviewWindow};
+    use tauri::WebviewWindow;
 
     /// Le niveau « bouclier » passe au-dessus des jeux en plein écran, sur tous les bureaux.
     pub fn prepare(window: &WebviewWindow) -> tauri::Result<()> {
@@ -115,9 +119,8 @@ mod platform {
     }
 
     /// `orderFrontRegardless` affiche la fenêtre sans activer l'app : le jeu garde le focus.
-    pub fn show(app: &AppHandle, window: &WebviewWindow) {
-        let window = window.clone();
-        let _ = app.run_on_main_thread(move || with_ns_window(&window, |ns_window| ns_window.orderFrontRegardless()));
+    pub fn show(window: &WebviewWindow) {
+        with_ns_window(window, |ns_window| ns_window.orderFrontRegardless());
     }
 
     fn with_ns_window(window: &WebviewWindow, action: impl FnOnce(&NSWindow)) {
@@ -130,7 +133,7 @@ mod platform {
 
 #[cfg(target_os = "windows")]
 mod platform {
-    use tauri::{AppHandle, WebviewWindow};
+    use tauri::WebviewWindow;
     use windows_sys::Win32::Foundation::HWND;
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         GWL_EXSTYLE, GetWindowLongPtrW, HWND_TOPMOST, SW_SHOWNOACTIVATE, SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOSIZE, SetWindowLongPtrW,
@@ -151,7 +154,7 @@ mod platform {
         Ok(())
     }
 
-    pub fn show(_app: &AppHandle, window: &WebviewWindow) {
+    pub fn show(window: &WebviewWindow) {
         if let Some(hwnd) = handle(window) {
             // SAFETY : la poignée vient de Tauri et désigne une fenêtre vivante.
             unsafe {
@@ -168,7 +171,7 @@ mod platform {
 
 #[cfg(not(any(target_os = "macos", target_os = "windows")))]
 mod platform {
-    use tauri::{AppHandle, WebviewWindow};
+    use tauri::WebviewWindow;
 
     pub fn prepare(_window: &WebviewWindow) -> tauri::Result<()> {
         Ok(())
@@ -176,7 +179,7 @@ mod platform {
 
     /// Sous Wayland, certains bureaux (GNOME notamment) refusent qu'une fenêtre passe au-dessus d'un jeu en plein écran.
     /// GTK ne laisse passer les clics qu'à travers une fenêtre déjà affichée : avant, elle n'existe pas encore à l'écran.
-    pub fn show(_app: &AppHandle, window: &WebviewWindow) {
+    pub fn show(window: &WebviewWindow) {
         if let Err(error) = window.show().and_then(|()| window.set_ignore_cursor_events(true)) {
             log::error!("Affichage de la notification impossible : {error}");
         }
