@@ -91,7 +91,7 @@ mod tests {
     #[test]
     fn platinum_comes_last_and_others_by_unlock_date() {
         let now = Utc::now();
-        let mut trophies = vec![
+        let mut trophies = [
             Trophy::new("platine", "", "", TrophyTier::Platinum).earned(Some(now - Duration::minutes(5))),
             Trophy::new("recent", "", "", TrophyTier::Bronze).earned(Some(now)),
             Trophy::new("ancien", "", "", TrophyTier::Gold).earned(Some(now - Duration::minutes(1))),
