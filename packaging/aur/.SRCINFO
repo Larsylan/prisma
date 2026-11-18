@@ -1,0 +1,21 @@
+pkgbase = prisma-trophies-bin
+	pkgdesc = Trophy tracker for PlayStation, Steam and Nintendo Switch, with real-time achievement notifications
+	pkgver = 1.1.0
+	pkgrel = 1
+	url = https://github.com/Larsylan/prisma
+	arch = x86_64
+	license = MIT
+	depends = webkit2gtk-4.1
+	depends = gtk3
+	depends = libayatana-appindicator
+	depends = alsa-lib
+	depends = libsecret
+	provides = prisma-trophies
+	conflicts = prisma-trophies
+	options = !debug
+	source = Prisma_1.1.0_amd64.deb::https://github.com/Larsylan/prisma/releases/download/v1.1.0/Prisma_1.1.0_amd64.deb
+	source = LICENSE::https://raw.githubusercontent.com/Larsylan/prisma/v1.1.0/LICENSE
+	sha256sums = 73f07d38d70e5b244ce7d2f0c1246586cfcffde355f65797fe8a750139d7a920
+	sha256sums = a01964210a6e917005b91271962add0212751e371bb6e01f1dd3a0f79b78515d
+
+pkgname = prisma-trophies-bin

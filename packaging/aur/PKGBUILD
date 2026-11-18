@@ -1,0 +1,22 @@
+# Maintainer: Larsylan <218639434+Larsylan@users.noreply.github.com>
+# Paquet construit à partir du .deb publié dans la Release : rien n'est compilé.
+pkgname=prisma-trophies-bin
+pkgver=1.1.0
+pkgrel=1
+pkgdesc="Trophy tracker for PlayStation, Steam and Nintendo Switch, with real-time achievement notifications"
+arch=('x86_64')
+url="https://github.com/Larsylan/prisma"
+license=('MIT')
+depends=('webkit2gtk-4.1' 'gtk3' 'libayatana-appindicator' 'alsa-lib' 'libsecret')
+provides=('prisma-trophies')
+conflicts=('prisma-trophies')
+options=('!debug')
+source=("Prisma_${pkgver}_amd64.deb::${url}/releases/download/v${pkgver}/Prisma_${pkgver}_amd64.deb"
+        "LICENSE::https://raw.githubusercontent.com/Larsylan/prisma/v${pkgver}/LICENSE")
+sha256sums=('73f07d38d70e5b244ce7d2f0c1246586cfcffde355f65797fe8a750139d7a920'
+            'a01964210a6e917005b91271962add0212751e371bb6e01f1dd3a0f79b78515d')
+
+package() {
+    bsdtar -xf "${srcdir}/data.tar.gz" -C "${pkgdir}"
+    install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
