@@ -21,6 +21,8 @@ FIXTURE_GAMES = 3
 
 
 def main() -> int:
+    # La console Windows n'écrit pas l'UTF-8 par défaut.
+    sys.stdout.reconfigure(encoding="utf-8")
     app, fixture, output = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
     output.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix="prisma-smoke-"))

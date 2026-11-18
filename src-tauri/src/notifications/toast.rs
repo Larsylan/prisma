@@ -50,8 +50,7 @@ impl ToastWindow {
             .focusable(false)
             .visible(false)
             .build()?;
-        window.set_ignore_cursor_events(true)?;
-        platform::prepare(&window);
+        platform::prepare(&window)?;
         Ok(window)
     }
 
@@ -101,7 +100,8 @@ mod platform {
     use tauri::{AppHandle, WebviewWindow};
 
     /// Le niveau « bouclier » passe au-dessus des jeux en plein écran, sur tous les bureaux.
-    pub fn prepare(window: &WebviewWindow) {
+    pub fn prepare(window: &WebviewWindow) -> tauri::Result<()> {
+        window.set_ignore_cursor_events(true)?;
         with_ns_window(window, |ns_window| {
             ns_window.setLevel(CGShieldingWindowLevel() as isize);
             ns_window.setCollectionBehavior(
@@ -111,6 +111,7 @@ mod platform {
                     | NSWindowCollectionBehavior::IgnoresCycle,
             );
         });
+        Ok(())
     }
 
     /// `orderFrontRegardless` affiche la fenêtre sans activer l'app : le jeu garde le focus.
@@ -137,7 +138,8 @@ mod platform {
     };
 
     /// Fenêtre outil, transparente aux clics, qui ne s'active jamais.
-    pub fn prepare(window: &WebviewWindow) {
+    pub fn prepare(window: &WebviewWindow) -> tauri::Result<()> {
+        window.set_ignore_cursor_events(true)?;
         if let Some(hwnd) = handle(window) {
             // SAFETY : la poignée vient de Tauri et désigne une fenêtre vivante.
             unsafe {
@@ -146,6 +148,7 @@ mod platform {
                 SetWindowLongPtrW(hwnd, GWL_EXSTYLE, style | extra);
             }
         }
+        Ok(())
     }
 
     pub fn show(_app: &AppHandle, window: &WebviewWindow) {
@@ -167,11 +170,14 @@ mod platform {
 mod platform {
     use tauri::{AppHandle, WebviewWindow};
 
-    pub fn prepare(_window: &WebviewWindow) {}
+    pub fn prepare(_window: &WebviewWindow) -> tauri::Result<()> {
+        Ok(())
+    }
 
     /// Sous Wayland, certains bureaux (GNOME notamment) refusent qu'une fenêtre passe au-dessus d'un jeu en plein écran.
+    /// GTK ne laisse passer les clics qu'à travers une fenêtre déjà affichée : avant, elle n'existe pas encore à l'écran.
     pub fn show(_app: &AppHandle, window: &WebviewWindow) {
-        if let Err(error) = window.show() {
+        if let Err(error) = window.show().and_then(|()| window.set_ignore_cursor_events(true)) {
             log::error!("Affichage de la notification impossible : {error}");
         }
     }
