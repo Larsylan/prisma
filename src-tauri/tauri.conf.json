@@ -36,10 +36,12 @@
     "targets": "all",
     "category": "Game",
     "shortDescription": "Système de trophées unifié PlayStation, Steam et Switch",
+    "longDescription": "Prisma réunit vos trophées PlayStation, vos succès Steam et vos jeux Nintendo Switch dans une seule collection, avec des grades, un niveau de trophée et une notification instantanée par-dessus le jeu.",
     "copyright": "© 2026 Larsylan — licence MIT",
     "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
     "resources": [],
     "macOS": { "minimumSystemVersion": "11.0" },
+    "windows": { "wix": { "language": "fr-FR" }, "nsis": { "languages": ["French"] } },
     "linux": { "deb": { "depends": [] } }
   }
 }
