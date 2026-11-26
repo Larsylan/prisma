@@ -13,6 +13,7 @@ pub enum Language {
     System,
     French,
     English,
+    Italian,
 }
 
 /// Langue effectivement affichée.
@@ -22,6 +23,8 @@ pub enum Locale {
     French,
     #[serde(rename = "en")]
     English,
+    #[serde(rename = "it")]
+    Italian,
 }
 
 impl Language {
@@ -30,20 +33,29 @@ impl Language {
             Language::System => Locale::from_tag(&sys_locale::get_locale().unwrap_or_default()),
             Language::French => Locale::French,
             Language::English => Locale::English,
+            Language::Italian => Locale::Italian,
         }
     }
 }
 
 impl Locale {
-    /// `fr-FR`, `fr_CA`… sont en français ; toute autre langue passe à l'anglais.
+    /// `fr-FR`, `fr_CA`… sont en français, `it-IT`, `it_CH`… en italien ; toute autre langue passe à l'anglais.
     fn from_tag(tag: &str) -> Self {
-        if tag.to_ascii_lowercase().starts_with("fr") { Locale::French } else { Locale::English }
+        let tag = tag.to_ascii_lowercase();
+        if tag.starts_with("fr") {
+            Locale::French
+        } else if tag.starts_with("it") {
+            Locale::Italian
+        } else {
+            Locale::English
+        }
     }
 
     pub fn texts(self) -> &'static Texts {
         match self {
             Locale::French => &FRENCH,
             Locale::English => &ENGLISH,
+            Locale::Italian => &ITALIAN,
         }
     }
 }
@@ -98,15 +110,31 @@ static ENGLISH: Texts = Texts {
     tiers: ["Bronze", "Silver", "Gold", "Platinum"],
 };
 
+static ITALIAN: Texts = Texts {
+    open: "Apri Prisma",
+    settings: "Impostazioni…",
+    test_notification: "Notifica di prova",
+    sync: "Sincronizza",
+    quit: "Esci",
+    level: "Livello",
+    platinums: "platino/i",
+    test_trophy: "Primi passi",
+    test_platinum: "Leggenda vivente",
+    player: "Giocatore",
+    tiers: ["Bronzo", "Argento", "Oro", "Platino"],
+};
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn only_french_system_languages_switch_to_french() {
+    fn system_languages_pick_their_locale() {
         assert_eq!(Locale::from_tag("fr-FR"), Locale::French);
         assert_eq!(Locale::from_tag("fr_CA"), Locale::French);
         assert_eq!(Locale::from_tag("en-US"), Locale::English);
+        assert_eq!(Locale::from_tag("it-IT"), Locale::Italian);
+        assert_eq!(Locale::from_tag("it_CH"), Locale::Italian);
         assert_eq!(Locale::from_tag("de-DE"), Locale::English);
         assert_eq!(Locale::from_tag(""), Locale::English);
     }

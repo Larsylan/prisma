@@ -1,6 +1,6 @@
 import { currentLocale } from './i18n/index.svelte';
 
-const LOCALE_TAGS = { fr: 'fr-FR', en: 'en-US' };
+const LOCALE_TAGS = { fr: 'fr-FR', en: 'en-US', it: 'it-IT' };
 
 const localeTag = () => LOCALE_TAGS[currentLocale()];
 

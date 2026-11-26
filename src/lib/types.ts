@@ -5,9 +5,9 @@ export type TrophyTier = 'bronze' | 'silver' | 'gold' | 'platinum';
 export type GroupingMode = 'all' | 'playstation' | 'none';
 export type ToastPosition = 'topRight' | 'topLeft';
 export type Appearance = 'dark' | 'light';
-export type Language = 'system' | 'french' | 'english';
+export type Language = 'system' | 'french' | 'english' | 'italian';
 /** Langue effectivement affichée. */
-export type Locale = 'fr' | 'en';
+export type Locale = 'fr' | 'en' | 'it';
 export type Preset =
   | 'night'
   | 'indigo'

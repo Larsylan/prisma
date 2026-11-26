@@ -5,7 +5,7 @@
 ![macOS | Windows | Linux](https://img.shields.io/badge/syst%C3%A8mes-macOS%20%7C%20Windows%20%7C%20Linux-informational)
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 
-*[English version](README.md) — l'app est disponible en français et en anglais.*
+*[English version](README.md) — l'app est disponible en français, en anglais et en italien.*
 
 **Prisma** est un système de **trophées et de succès** gratuit et open source pour **macOS, Windows et Linux**. Il réunit vos **trophées PlayStation (PSN)**, vos **succès Steam** et vos **jeux Nintendo Switch** dans une seule collection, façon console :
 - 4 grades : bronze, argent, or et platine ;
@@ -75,7 +75,7 @@ git clone https://github.com/Larsylan/prisma.git && cd prisma/packaging/aur && m
 - **Uniformisation** : Steam n'a pas de grades. Ils sont attribués automatiquement et restent modifiables à la main. Chaque jeu Steam reçoit aussi un **platine**.
 - **Carte de notification** affichée au-dessus des jeux, sans prendre le focus du clavier ni de la souris, accompagnée d'un **carillon cristallin**.
 - **Thèmes** : dix-huit thèmes de couleur, dont des néons lumineux, un thème clair et un noir spectral, chacun prévisualisé avant d'être appliqué.
-- **Interface en français et en anglais**, selon la langue du système ou au choix dans les réglages.
+- **Interface en français, en anglais et en italien**, selon la langue du système ou au choix dans les réglages.
 - **Identité originale** : l'emblème est un cristal hexagonal à facettes et le son est synthétisé par l'app. Aucun visuel ni son ne provient d'une autre marque.
 - L'app tourne **dans la barre des menus** (macOS) ou **la zone de notification** (Windows, Linux), même fenêtre fermée. Elle peut se lancer à l'ouverture de session.
 
@@ -444,7 +444,7 @@ Le journal de l'app (voir [Données](#données-et-confidentialité)) indique cha
 ```sh
 npm ci                                  # dépendances de l'interface
 npm run tauri dev                       # app complète, rechargée à chaque modification
-npm run demo                            # interface seule dans un navigateur, sur une bibliothèque fictive (?lang=fr|en)
+npm run demo                            # interface seule dans un navigateur, sur une bibliothèque fictive (?lang=fr|en|it)
 npm run check                           # vérification TypeScript et Svelte
 npm test                                # tests de l'interface (Vitest)
 cargo test --workspace                  # tests du cœur et de l'app
@@ -452,7 +452,7 @@ cargo clippy --workspace --all-targets  # analyse du code Rust
 cargo fmt --all                         # formatage du code Rust
 ```
 
-Le mode démo accepte `?view=game&id=group:lumen` ou `?view=settings` pour ouvrir directement un écran, et `?lang=fr` ou `?lang=en` pour la langue : c'est ainsi que sont produites les captures de ce README. La démo animée s'enregistre avec `./scripts/demo/record.sh` (Docker requis), qui filme la vraie app sur un faux client Steam dans un Linux virtuel.
+Le mode démo accepte `?view=game&id=group:lumen` ou `?view=settings` pour ouvrir directement un écran, et `?lang=fr`, `?lang=en` ou `?lang=it` pour la langue : c'est ainsi que sont produites les captures de ce README. La démo animée s'enregistre avec `./scripts/demo/record.sh` (Docker requis), qui filme la vraie app sur un faux client Steam dans un Linux virtuel.
 
 Deux variables d'environnement isolent les essais de vos vraies données :
 
