@@ -13,7 +13,7 @@ You need [Rust](https://rustup.rs) 1.87+ and [Node.js](https://nodejs.org) 22 (p
 ```sh
 npm ci
 npm run tauri dev   # full app, reloaded on every change
-npm run demo        # interface alone in a browser, on a fictional library (?lang=en or ?lang=fr)
+npm run demo        # interface alone in a browser, on a fictional library (?lang=en, ?lang=fr or ?lang=it)
 ```
 
 To try Steam detection without a Steam account, run the app on a fake Steam client:
@@ -33,7 +33,7 @@ cargo run -p prisma-core --features test-support --example steam_fixture -- /tmp
 | `crates/prisma-core` | Business logic with no UI: trophies, merging, Steam / PSN / Switch sources, persistence, chime |
 | `src-tauri` | Tauri backend: services, sync, notifications, tray icon |
 | `src` | Svelte 5 + TypeScript interface |
-| `src/lib/i18n` | Interface texts, in French (`fr.ts`, the reference) and English (`en.ts`) |
+| `src/lib/i18n` | Interface texts, in French (`fr.ts`, the reference), English (`en.ts`) and Italian (`it.ts`) |
 | `scripts` | macOS install, smoke test run by CI, demo recording |
 
 ## Before opening a pull request

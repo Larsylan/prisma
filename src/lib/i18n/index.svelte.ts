@@ -1,8 +1,9 @@
 import type { Locale } from '../types';
 import { en } from './en';
 import { fr, type Dictionary } from './fr';
+import { it } from './it';
 
-const DICTIONARIES: Record<Locale, Dictionary> = { fr, en };
+const DICTIONARIES: Record<Locale, Dictionary> = { fr, en, it };
 
 const active = $state({ locale: 'fr' as Locale });
 

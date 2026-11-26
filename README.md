@@ -5,7 +5,7 @@
 ![macOS | Windows | Linux](https://img.shields.io/badge/platforms-macOS%20%7C%20Windows%20%7C%20Linux-informational)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-*[Version française](README.fr.md) — the app is available in English and French.*
+*[Version française](README.fr.md) — the app is available in English, French and Italian.*
 
 **Prisma** is a free, open-source **trophy and achievement tracker** for **macOS, Windows and Linux**. It brings your **PlayStation (PSN) trophies**, **Steam achievements** and **Nintendo Switch games** together in a single console-style collection:
 - 4 tiers: bronze, silver, gold and platinum;
@@ -48,7 +48,7 @@ git clone https://github.com/Larsylan/prisma.git && cd prisma/packaging/aur && m
 - **Notification card** shown above games without stealing keyboard or mouse focus, with a **crystal chime**.
 - **Themes**: eighteen color themes, including glowing neons, a light theme and a spectral black, each previewed before being applied.
 - **Original identity**: the hexagonal crystal emblem and the chime are created by the app itself.
-- **English and French** interface, following your system language or chosen in the settings.
+- **English, French and Italian** interface, following your system language or chosen in the settings.
 - Lives in the **menu bar** (macOS) or **system tray** (Windows, Linux), even with the window closed, and can start at login.
 
 ## Supported systems
@@ -170,7 +170,7 @@ SteamWebImporter ─────────────────────
 ```sh
 npm ci                                  # interface dependencies
 npm run tauri dev                       # full app, reloaded on every change
-npm run demo                            # interface alone in a browser, on a fictional library (?lang=en|fr)
+npm run demo                            # interface alone in a browser, on a fictional library (?lang=en|fr|it)
 npm run check                           # TypeScript and Svelte checks
 npm test                                # interface tests (Vitest)
 cargo test --workspace                  # core and app tests

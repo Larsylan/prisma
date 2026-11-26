@@ -26,11 +26,12 @@ import type {
 
 const parameters = new URLSearchParams(location.search);
 
-/** `?lang=en` ou `?lang=fr` ; à défaut, la langue du navigateur. */
+/** `?lang=en`, `?lang=fr` ou `?lang=it` ; à défaut, la langue du navigateur. */
 const LOCALE: Locale = (() => {
   const requested = parameters.get('lang');
-  if (requested === 'fr' || requested === 'en') return requested;
-  return navigator.language.startsWith('fr') ? 'fr' : 'en';
+  if (requested === 'fr' || requested === 'en' || requested === 'it') return requested;
+  if (navigator.language.startsWith('fr')) return 'fr';
+  return navigator.language.startsWith('it') ? 'it' : 'en';
 })();
 
 const NAMES: Record<Locale, [string, string][]> = {
@@ -66,10 +67,27 @@ const NAMES: Record<Locale, [string, string][]> = {
     ['Light Restored', 'Relight every lighthouse.'],
     ["Journey's End", 'Finish the story.'],
   ],
+  it: [
+    ['Primi passi', 'Completa il prologo.'],
+    ['Esploratore', 'Scopri tutte le regioni.'],
+    ['Collezionista', 'Raccogli 50 oggetti rari.'],
+    ['Senza un graffio', 'Sconfiggi un boss senza subire danni.'],
+    ['Maestro artigiano', 'Crea un oggetto leggendario.'],
+    ['Viaggiatore esperto', 'Percorri 100 km.'],
+    ['Duello al vertice', 'Vinci un duello classificato.'],
+    ['Tesoro dimenticato', 'Apri il forziere nascosto.'],
+    ['Corsa contro il tempo', 'Termina una gara in meno di 2 minuti.'],
+    ['Amico degli animali', 'Addomestica una creatura.'],
+    ['Cartografo', 'Completa la mappa.'],
+    ['Il grande salto', 'Salta dalla vetta più alta.'],
+    ['Luce ritrovata', 'Riaccendi tutti i fari.'],
+    ['Fine del viaggio', 'Completa la storia.'],
+  ],
 };
 const PLAYSTATION_PLATINUM: Record<Locale, [string, string]> = {
   fr: ['Légende vivante', 'Obtenir tous les autres trophées.'],
   en: ['Living Legend', 'Earn every other trophy.'],
+  it: ['Leggenda vivente', 'Ottieni tutti gli altri trofei.'],
 };
 const DAY = 86_400_000;
 const POINTS: Record<TrophyTier, number> = { bronze: 15, silver: 30, gold: 90, platinum: 300 };
@@ -214,7 +232,7 @@ const settings: Settings = {
   toastDurationSeconds: 6,
   toastPosition: 'topRight',
   theme: 'night',
-  language: LOCALE === 'fr' ? 'french' : 'english',
+  language: ({ fr: 'french', en: 'english', it: 'italian' } as const)[LOCALE],
 };
 
 const system: SystemInfo = { dataDirectory: '~/Library/Application Support/Prisma', detectedSteamId64: '76561197972611406', launchAtLogin: true };

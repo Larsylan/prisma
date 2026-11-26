@@ -11,6 +11,7 @@
     { value: 'system', label: t.settings.systemLanguage },
     { value: 'french', label: 'Français' },
     { value: 'english', label: 'English' },
+    { value: 'italian', label: 'Italiano' },
   ]);
 </script>
 
